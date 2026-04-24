@@ -22,6 +22,21 @@ const debugDesktopMode =
 const debugOpenWindow = debugParams.get("open");
 const debugShowStart = debugParams.has("start");
 const debugShowPower = debugParams.has("power");
+const mobileMedia = window.matchMedia("(max-width: 768px)");
+
+function isMobileLayout(){
+  return mobileMedia.matches;
+}
+
+function fitWindowToMobile(win){
+  if (!win || !isMobileLayout()) return;
+  win.classList.remove("maximized");
+  win.style.left = "8px";
+  win.style.right = "8px";
+  win.style.top = "60px";
+  win.style.width = "calc(100vw - 16px)";
+  win.style.height = "";
+}
 
 window.addEventListener("load", () => {
   if (debugDesktopMode) {
@@ -133,11 +148,16 @@ function openWin(id){
   if (!w) return;
   if (!openWindows.has(id)) {
     const n = openWindows.size;
-    if (!w.style.top || w.style.top === "60px") w.style.top  = `${40 + n*28}px`;
-    if (!w.style.left || w.style.left === "150px") w.style.left = `${160 + n*32}px`;
+    if (isMobileLayout()) {
+      fitWindowToMobile(w);
+    } else {
+      if (!w.style.top || w.style.top === "60px") w.style.top  = `${40 + n*28}px`;
+      if (!w.style.left || w.style.left === "150px") w.style.left = `${160 + n*32}px`;
+    }
     addTaskbarItem(id);
     openWindows.add(id);
   }
+  fitWindowToMobile(w);
   w.classList.add("active");
   w.style.display = "block";
   focusWin(id);
@@ -239,6 +259,10 @@ function bindSelectableLaunchers(selector, groupSelector = selector){
       e.stopPropagation();
       $$(groupSelector).forEach(node => node.classList.remove("selected"));
       item.classList.add("selected");
+      if (isMobileLayout() && item.dataset.open) {
+        openWin(item.dataset.open);
+        playSound("click");
+      }
     });
     item.addEventListener("dblclick", (e) => {
       e.stopPropagation();
@@ -297,6 +321,10 @@ document.addEventListener("mousedown", (e) => {
   if (e.target.closest("button")) return;
   const win = bar.closest(".window");
   if (!win || win.classList.contains("maximized")) return;
+  if (isMobileLayout()) {
+    fitWindowToMobile(win);
+    return;
+  }
   drag = win;
   const rect = win.getBoundingClientRect();
   offsetX = e.clientX - rect.left;
@@ -306,14 +334,18 @@ document.addEventListener("mousedown", (e) => {
 });
 document.addEventListener("mousemove", (e) => {
   if (!drag) return;
-  const maxX = window.innerWidth - 60;
-  const maxY = window.innerHeight - 60;
+  const maxX = Math.max(0, window.innerWidth - Math.min(100, drag.offsetWidth));
+  const maxY = Math.max(0, window.innerHeight - 60);
   const x = Math.max(-drag.offsetWidth + 100, Math.min(e.clientX - offsetX, maxX));
   const y = Math.max(0, Math.min(e.clientY - offsetY, maxY));
   drag.style.left = `${x}px`;
   drag.style.top  = `${y}px`;
 });
 document.addEventListener("mouseup", () => drag = null);
+mobileMedia.addEventListener?.("change", () => {
+  if (!isMobileLayout()) return;
+  $$(".window.active").forEach(fitWindowToMobile);
+});
 
 /* ---------- START MENU ---------- */
 const startBtn = $("#startBtn");

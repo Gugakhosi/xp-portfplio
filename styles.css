@@ -1426,16 +1426,310 @@ body.crt-on{
   z-index: 5;
 }
 
-/* =================================================
-   RESPONSIVE
-   ================================================= */
-@media (max-width: 760px){
-  .window{ width: 94vw !important; left: 3vw !important; top: 16px !important; }
-  .about-layout{ grid-template-columns: 1fr; }
-  .projects-grid{ grid-template-columns: 1fr; }
-  .mc-body{ grid-template-columns: 1fr; }
-  .xp-start{ width: 100vw; left: 0; border-radius: 0; }
-  .xp-start-body{ grid-template-columns: 1fr; }
-  .icon{ width: 70px; }
-  .icon-svg{ width: 36px; height: 36px; }
+/* Mobile responsive fixes */
+@media (max-width: 768px){
+  html,
+  body{
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: manipulation;
+  }
+
+  body{
+    position: relative;
+  }
+
+  img,
+  svg,
+  video,
+  canvas{
+    max-width: 100%;
+  }
+
+  .desktop{
+    position: fixed;
+    inset: 0 0 32px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 72px));
+    grid-auto-rows: min-content;
+    align-content: start;
+    gap: 10px 6px;
+    padding: 8px 8px 56px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .desktop > .icon{
+    position: static !important;
+    width: 72px;
+    min-height: 76px;
+    padding: 4px 2px;
+  }
+
+  .icon-image,
+  .icon-svg{
+    width: 38px;
+    height: 38px;
+  }
+
+  .icon span{
+    max-width: 68px;
+    overflow-wrap: anywhere;
+  }
+
+  .window{
+    left: 8px !important;
+    right: 8px !important;
+    top: 60px !important;
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100dvh - 100px);
+    overflow: hidden;
+  }
+
+  .window.maximized{
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: calc(100dvh - 32px) !important;
+    max-height: calc(100dvh - 32px);
+  }
+
+  .window-body{
+    max-height: calc(100dvh - 145px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .window.maximized .window-body{
+    max-height: calc(100dvh - 77px);
+  }
+
+  .menubar,
+  .toolbar,
+  .ie-toolbar,
+  .addressbar,
+  .viewer-toolbar,
+  .status-bar{
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .toolbar,
+  .ie-toolbar,
+  .viewer-toolbar{
+    flex-wrap: wrap;
+  }
+
+  .addressbar{
+    align-items: stretch;
+  }
+
+  .address-input{
+    min-width: 0;
+  }
+
+  .address-input input{
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  .mc-body,
+  .about-layout,
+  .projects-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .mc-body{
+    min-height: 0;
+  }
+
+  .mc-sidebar{
+    max-height: none;
+  }
+
+  .file-grid{
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  }
+
+  .about-layout{
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .polaroid{
+    transform: none;
+  }
+
+  .project-card{
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .project-thumb{
+    width: 100%;
+    height: 54px;
+  }
+
+  .project-title,
+  .project-desc,
+  .project-tags span,
+  .field-row,
+  .xp-item,
+  .xp-link{
+    overflow-wrap: anywhere;
+  }
+
+  .ie-content{
+    padding: 12px;
+  }
+
+  .ie-header h1{
+    font-size: 22px;
+  }
+
+  .notepad{
+    max-height: calc(100dvh - 170px);
+  }
+
+  .notepad pre,
+  pre,
+  code{
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .cmd-body{
+    min-height: 220px;
+    max-height: calc(100dvh - 155px);
+  }
+
+  .viewer-body{
+    min-height: 220px;
+    overflow: auto;
+  }
+
+  .viewer-body img{
+    max-height: calc(100dvh - 210px);
+  }
+
+  .field-row,
+  .skill-row{
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .skill-row em{
+    text-align: left;
+  }
+
+  fieldset,
+  .panel,
+  .network-body,
+  .recycle-empty,
+  .about-layout,
+  .ie-content,
+  .mc-body,
+  .cmd-body{
+    max-width: 100%;
+  }
+
+  a,
+  p,
+  li,
+  label,
+  span{
+    overflow-wrap: anywhere;
+  }
+
+  .taskbar{
+    height: 32px;
+    overflow: hidden;
+  }
+
+  .taskbar-items{
+    gap: 2px;
+    padding-right: 2px;
+  }
+
+  .taskbar-item{
+    min-width: 0;
+    max-width: 118px;
+    flex: 1 1 78px;
+    padding: 0 5px;
+  }
+
+  .systray{
+    gap: 4px;
+    padding: 0 5px;
+    flex-shrink: 0;
+  }
+
+  .tray-icon{
+    display: none;
+  }
+
+  .clock{
+    min-width: 44px;
+    padding: 2px 0;
+    font-size: 10px;
+  }
+
+  .xp-start{
+    left: 4px;
+    bottom: 32px;
+    width: calc(100vw - 8px);
+    max-height: calc(100dvh - 40px);
+    border-radius: 6px 6px 0 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .xp-start-body{
+    grid-template-columns: 1fr;
+  }
+
+  .xp-start-header{
+    height: auto;
+    min-height: 54px;
+  }
+
+  .xp-start-footer{
+    flex-wrap: wrap;
+  }
+
+  .xp-footer-btn,
+  .xp-footer-btn-shutdown{
+    min-width: 0;
+    flex: 1 1 130px;
+  }
+
+  .run-dialog .window{
+    width: calc(100vw - 24px) !important;
+  }
+
+  .run-body{
+    flex-direction: column;
+  }
+
+  .power-dialog,
+  .logoff-dialog{
+    padding: 8px;
+  }
+
+  .xp-power-body{
+    padding: 24px 12px 22px;
+  }
+
+  .power-dialog-actions,
+  .logoff-dialog-actions{
+    gap: 12px;
+  }
 }
