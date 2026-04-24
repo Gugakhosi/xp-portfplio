@@ -222,7 +222,7 @@
 
   <button class="icon" data-open="win-resume" style="top: 202px; left: 14px;">
     <img class="icon-image" src="assets/desktop/resume.webp" alt="">
-    <span>Resume.txt</span>
+    <span>Resume.pdf</span>
   </button>
 
   <button class="icon" data-open="win-contact" style="top: 296px; left: 14px;">
@@ -274,7 +274,7 @@
             <div class="panel-title">System Tasks</div>
             <div class="panel-body">
               <a data-open="win-projects">View portfolio projects</a>
-              <a data-open="win-resume">Open Resume.txt</a>
+              <a data-open="win-resume">Open Resume.pdf</a>
               <a data-open="win-contact">Send e-mail</a>
             </div>
           </div>
@@ -319,8 +319,8 @@
           <div class="group-title">Working Files</div>
           <div class="file-grid">
             <button class="file-item" data-open="win-resume">
-              <img src="assets/xp/notepad.ico" alt="">
-              <span>Resume.txt</span>
+              <img src="assets/desktop/resume.webp" alt="">
+              <span>Resume.pdf</span>
             </button>
             <button class="file-item" data-open="win-skills">
               <img src="assets/xp/control-panel.ico" alt="">
@@ -382,7 +382,7 @@
             <div class="panel-title">File and Folder Tasks</div>
             <div class="panel-body">
               <a data-open="win-about">Open About Me</a>
-              <a data-open="win-resume">Open Resume.txt</a>
+              <a data-open="win-resume">Open Resume.pdf</a>
               <a data-open="win-viewer">Open Portrait Picture</a>
             </div>
           </div>
@@ -404,8 +404,8 @@
               <span>About Guga</span>
             </button>
             <button class="file-item" data-open="win-resume">
-              <img src="assets/xp/notepad.ico" alt="">
-              <span>Resume.txt</span>
+              <img src="assets/desktop/resume.webp" alt="">
+              <span>Resume.pdf</span>
             </button>
             <button class="file-item" data-open="win-contact">
               <img src="assets/desktop/contact.webp" alt="">
@@ -503,20 +503,15 @@
             <img src="assets/avatar.png" alt="Guga">
           </div>
           <div class="name-tag">Guga Khosiauri</div>
-          <div class="role-tag">Web Developer (in training)</div>
+          <div class="role-tag">Field Computer Technician</div>
         </div>
         <div class="about-right">
           <h2>About Guga</h2>
-          <p>I'm a beginner web developer from Georgia, learning HTML, CSS, and JavaScript and building simple projects to keep improving.</p>
-          <p>Right now I'm focused on frontend fundamentals, cleaner interfaces, and a Flutter side project called <b>MyCashier</b>.</p>
-          <fieldset style="margin-top:10px">
-            <legend>What I'm into</legend>
-            <ul class="tight">
-              <li>Front-end web development</li>
-              <li>Clean UI design & retro interfaces</li>
-              <li>Learning by shipping small projects</li>
-            </ul>
-          </fieldset>
+          <p>Hi, I'm Guga.</p>
+          <p>I'm a field computer technician who enjoys solving real-world tech problems. I work with computers, Windows systems, POS devices, printers, networking, hardware diagnostics, and user support.</p>
+          <p>I like technology that feels practical, useful, and reliable. Whether it's fixing a broken system, setting up equipment, troubleshooting Windows, or building a clean digital project, I enjoy finding the problem and making things work.</p>
+          <p>I'm also learning and building projects in app development, UI design, automation, and AI tools. This portfolio is part of that journey: a mix of my technical background, creativity, and love for old-school Windows XP style.</p>
+          <p>My goal is simple: keep improving, build better projects, and grow deeper into the tech world.</p>
         </div>
       </div>
       <div class="status-bar"><p class="status-bar-field">Ready</p></div>
@@ -611,12 +606,12 @@
     </div>
   </div>
 
-  <!-- =========== WINDOW: RESUME (NOTEPAD) =========== -->
-  <div class="window" id="win-resume" data-title="Resume.txt - Notepad" data-icon="assets/xp/notepad.ico" style="width:580px">
+  <!-- =========== WINDOW: RESUME (PDF) =========== -->
+  <div class="window" id="win-resume" data-title="Guga_Khosiauri_Resume_Visual.pdf" data-icon="assets/desktop/resume.webp" style="width:720px">
     <div class="title-bar" data-drag>
       <div class="title-bar-text">
-        <img class="tb-icon" src="assets/xp/notepad.ico" alt="">
-        Resume.txt - Notepad
+        <img class="tb-icon" src="assets/desktop/resume.webp" alt="">
+        Guga_Khosiauri_Resume_Visual.pdf
       </div>
       <div class="title-bar-controls">
         <button aria-label="Minimize" data-minimize></button>
@@ -625,8 +620,13 @@
       </div>
     </div>
     <div class="window-body" style="margin:0; padding:0; border:none">
-      <div class="menubar"><span>File</span><span>Edit</span><span>Format</span><span>View</span><span>Help</span></div>
-      <div class="notepad"><pre>================================================================
+      <div class="menubar"><span>File</span><span>View</span><span>Document</span><span>Help</span></div>
+      <div class="resume-toolbar">
+        <a class="resume-action" href="assets/Guga_Khosiauri_Resume_Visual.pdf" target="_blank" rel="noreferrer">Open PDF</a>
+        <a class="resume-action" href="assets/Guga_Khosiauri_Resume_Visual.pdf" download>Download</a>
+      </div>
+      <iframe class="resume-pdf" src="assets/Guga_Khosiauri_Resume_Visual.pdf#view=FitH" title="Guga Khosiauri Resume"></iframe>
+      <div class="notepad legacy-resume-text"><pre>================================================================
                 GUGA KHOSIAURI — RESUME
 ================================================================
 
@@ -675,9 +675,9 @@ LEARNING
 
 ================================================================</pre></div>
       <div class="status-bar" style="display:flex">
-        <p class="status-bar-field">Ln 1, Col 1</p>
+        <p class="status-bar-field">Guga_Khosiauri_Resume_Visual.pdf</p>
         <p class="status-bar-field">100%</p>
-        <p class="status-bar-field">Windows (CRLF)</p>
+        <p class="status-bar-field">PDF Document</p>
       </div>
     </div>
   </div>
@@ -909,7 +909,7 @@ LEARNING
       <div class="xp-recent">
         <button class="xp-item" data-open="win-about"><img class="xp-item-icon" src="assets/desktop/about.webp" alt=""><span>About Me</span></button>
         <button class="xp-item" data-open="win-documents"><img class="xp-item-icon" src="assets/xp/my-documents.ico" alt=""><span>My Documents</span></button>
-        <button class="xp-item" data-open="win-resume"><img class="xp-item-icon" src="assets/desktop/resume.webp" alt=""><span>Resume.txt</span></button>
+        <button class="xp-item" data-open="win-resume"><img class="xp-item-icon" src="assets/desktop/resume.webp" alt=""><span>Resume.pdf</span></button>
         <button class="xp-item" data-open="win-contact"><img class="xp-item-icon" src="assets/desktop/contact.webp" alt=""><span>Contact</span></button>
         <button class="xp-item" data-open="win-cmd"><svg class="xp-item-icon"><use href="#i-cmd"/></svg><span>Command Prompt</span></button>
         <button class="xp-item" data-open="win-viewer"><img class="xp-item-icon" src="assets/xp/pictures.ico" alt=""><span>Picture Viewer</span></button>
@@ -935,7 +935,7 @@ LEARNING
       </button>
       <button class="xp-link" data-open="win-resume">
         <img class="xp-link-icon" src="assets/desktop/resume.webp" alt="">
-        <span>Resume.txt</span>
+        <span>Resume.pdf</span>
       </button>
       <button class="xp-link" data-open="win-contact">
         <img class="xp-link-icon" src="assets/desktop/contact.webp" alt="">

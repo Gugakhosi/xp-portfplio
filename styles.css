@@ -658,6 +658,36 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
   color: #000;
   user-select: text;
 }
+.legacy-resume-text{ display: none; }
+.resume-toolbar{
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 6px;
+  background: linear-gradient(to bottom, #f7f5ed, #d9d4c2);
+  border-bottom: 1px solid #aca899;
+  font-size: 11px;
+}
+.resume-action{
+  color: #000;
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid #888;
+  background: linear-gradient(to bottom, #fff, #dadada);
+  font: 11px Tahoma, sans-serif;
+}
+.resume-action:hover{
+  background: #fdecb8;
+  border-color: #d4a837;
+}
+.resume-pdf{
+  display: block;
+  width: 100%;
+  height: min(72vh, 760px);
+  min-height: 520px;
+  border: 0;
+  background: #777;
+}
 
 /* =================================================
    CONTACT / SKILLS
@@ -1624,6 +1654,15 @@ body.crt-on{
     max-height: calc(100dvh - 170px);
   }
 
+  .resume-toolbar{
+    flex-wrap: wrap;
+  }
+
+  .resume-pdf{
+    height: calc(100dvh - 185px);
+    min-height: 360px;
+  }
+
   .notepad pre,
   pre,
   code{
@@ -1707,7 +1746,7 @@ body.crt-on{
   }
 
   .tray-icon{
-    display: inline-flex;
+    display: none;
     padding: 0 1px;
   }
 
@@ -1773,5 +1812,22 @@ body.crt-on{
   .power-dialog-actions,
   .logoff-dialog-actions{
     gap: 12px;
+  }
+
+  body.crt-on{
+    filter: none;
+  }
+
+  body.crt-on::after{
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.12) 0,
+        rgba(0,0,0,0.12) 1px,
+        rgba(255,255,255,0.03) 1px,
+        rgba(255,255,255,0.03) 3px
+      );
+    mix-blend-mode: normal;
+    opacity: 0.45;
   }
 }

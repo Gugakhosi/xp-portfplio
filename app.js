@@ -581,7 +581,7 @@ const COMMANDS = {
     cmdWrite(" 04/23/2026  10:00 AM    &lt;DIR&gt;          ..");
     cmdWrite(" 04/23/2026  10:00 AM             2,048 about.txt");
     cmdWrite(" 04/23/2026  10:00 AM    &lt;DIR&gt;          my documents");
-    cmdWrite(" 04/23/2026  10:00 AM             3,072 resume.txt");
+    cmdWrite(" 04/24/2026  09:42 PM             4,505 Resume.pdf");
     cmdWrite(" 04/23/2026  10:00 AM             1,024 contact.vcf");
     cmdWrite(" 04/23/2026  10:00 AM             1,024 skills.inf");
     cmdWrite("               4 File(s)          7,168 bytes");
@@ -741,6 +741,10 @@ document.addEventListener("mouseup", () => {
 const crtToggleBtn = $("#crtToggleBtn");
 if (crtToggleBtn) {
   crtToggleBtn.addEventListener("click", () => {
+    if (isMobileLayout()) {
+      document.body.classList.remove("crt-on");
+      return;
+    }
     document.body.classList.toggle("crt-on");
   });
 }
@@ -749,6 +753,7 @@ if (crtToggleBtn) {
 const fullscreenBtn = $("#fullscreenBtn");
 if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", () => {
+    if (isMobileLayout()) return;
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen?.();
     } else {
