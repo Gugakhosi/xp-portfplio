@@ -1195,6 +1195,7 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
   font: inherit;
   text-align: left;
 }
+.ctx-menu button[data-ctx="view"]{ display: none; }
 .ctx-menu button:hover{
   background: #316ac5; color: #fff;
 }
@@ -1645,10 +1646,12 @@ body.crt-on{
 
   .addressbar{
     align-items: stretch;
+    flex-wrap: wrap;
   }
 
   .address-input{
     min-width: 0;
+    flex: 1 1 180px;
   }
 
   .address-input input{
@@ -1705,6 +1708,38 @@ body.crt-on{
     padding: 12px;
   }
 
+  .internet-page{
+    padding: 10px;
+    min-height: 0;
+    max-height: calc(100dvh - 260px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .internet-shortcuts{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .internet-shortcuts button,
+  .internet-shortcuts a{
+    min-height: 70px;
+    padding: 8px 6px;
+    overflow: hidden;
+  }
+
+  .internet-shortcuts img{
+    width: 30px !important;
+    height: 30px !important;
+    max-width: 30px;
+    max-height: 30px;
+    flex: 0 0 auto;
+  }
+
+  #internetGo{
+    flex: 0 0 72px;
+  }
+
   .ie-header h1{
     font-size: 22px;
   }
@@ -1737,11 +1772,37 @@ body.crt-on{
 
   .viewer-body{
     min-height: 220px;
-    overflow: auto;
+    height: calc(100dvh - 235px);
+    overflow: hidden;
+    padding: 6px;
   }
 
   .viewer-body img{
-    max-height: calc(100dvh - 210px);
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100dvh - 255px);
+    object-fit: contain;
+    flex: 0 1 auto;
+  }
+
+  .viewer-toolbar{
+    display: grid;
+    grid-template-columns: 38px 38px 1px 38px 38px 1fr;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .viewer-toolbar button{
+    min-width: 0;
+    padding: 4px 6px;
+  }
+
+  #viewerName{
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .field-row{

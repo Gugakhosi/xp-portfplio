@@ -503,17 +503,48 @@ tick(); setInterval(tick, 1000);
 
 /* ---------- CONTEXT MENU ---------- */
 const ctxMenu = $("#ctxMenu");
-desktop.addEventListener("contextmenu", (e) => {
-  if (e.target.closest(".window")) return;
-  e.preventDefault();
-  const x = Math.min(e.clientX, window.innerWidth  - 200);
-  const y = Math.min(e.clientY, window.innerHeight - 240);
+function openCtxMenuAt(x, y){
+  const menuWidth = Math.min(220, window.innerWidth - 8);
+  const menuHeight = 285;
+  x = Math.max(4, Math.min(x, window.innerWidth - menuWidth - 4));
+  y = Math.max(4, Math.min(y, window.innerHeight - menuHeight - 36));
   ctxMenu.style.left = `${x}px`;
   ctxMenu.style.top  = `${y}px`;
   ctxMenu.classList.remove("hidden");
+}
+desktop.addEventListener("contextmenu", (e) => {
+  if (e.target.closest(".window")) return;
+  e.preventDefault();
+  openCtxMenuAt(e.clientX, e.clientY);
 });
 document.addEventListener("click", closeCtxMenu);
 function closeCtxMenu(){ ctxMenu.classList.add("hidden"); }
+let touchCtxTimer = null;
+let touchCtxStart = null;
+desktop.addEventListener("touchstart", (e) => {
+  if (e.target.closest(".window")) return;
+  const touch = e.touches[0];
+  if (!touch) return;
+  touchCtxStart = { x: touch.clientX, y: touch.clientY };
+  clearTimeout(touchCtxTimer);
+  touchCtxTimer = setTimeout(() => {
+    openCtxMenuAt(touchCtxStart.x, touchCtxStart.y);
+    if (navigator.vibrate) navigator.vibrate(18);
+  }, 520);
+}, { passive: true });
+desktop.addEventListener("touchmove", (e) => {
+  if (!touchCtxStart || !e.touches[0]) return;
+  const dx = Math.abs(e.touches[0].clientX - touchCtxStart.x);
+  const dy = Math.abs(e.touches[0].clientY - touchCtxStart.y);
+  if (dx > 10 || dy > 10) clearTimeout(touchCtxTimer);
+}, { passive: true });
+["touchend", "touchcancel"].forEach(type => {
+  desktop.addEventListener(type, () => {
+    clearTimeout(touchCtxTimer);
+    touchCtxTimer = null;
+    touchCtxStart = null;
+  }, { passive: true });
+});
 const desktopWallpapers = [
   'url("assets/bliss.jpg")',
   'url("assets/gallery/xp-green-hills.svg")',
