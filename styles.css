@@ -1452,32 +1452,59 @@ body.crt-on{
   .desktop{
     position: fixed;
     inset: 0 0 32px 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(72px, 72px));
-    grid-auto-rows: min-content;
-    align-content: start;
-    gap: 10px 6px;
-    padding: 8px 8px 56px;
+    display: block;
+    padding: 0;
+    background-size: 100% 100%;
+    background-position: center;
     overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-y: hidden;
   }
 
   .desktop > .icon{
-    position: static !important;
-    width: 72px;
+    position: absolute !important;
+    width: 84px;
     min-height: 76px;
     padding: 4px 2px;
   }
 
+  .desktop > .icon[data-open="win-about"]{
+    top: 14px !important;
+    left: 10px !important;
+    right: auto !important;
+  }
+
+  .desktop > .icon[data-open="win-projects"]{
+    top: 108px !important;
+    left: 10px !important;
+    right: auto !important;
+  }
+
+  .desktop > .icon[data-open="win-resume"]{
+    top: 202px !important;
+    left: 10px !important;
+    right: auto !important;
+  }
+
+  .desktop > .icon[data-open="win-contact"]{
+    top: 296px !important;
+    left: 10px !important;
+    right: auto !important;
+  }
+
+  .desktop > .icon[data-open="win-recycle"]{
+    top: 14px !important;
+    left: auto !important;
+    right: 8px !important;
+  }
+
   .icon-image,
   .icon-svg{
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
   }
 
   .icon span{
-    max-width: 68px;
+    max-width: 80px;
     overflow-wrap: anywhere;
   }
 
@@ -1568,13 +1595,12 @@ body.crt-on{
   }
 
   .project-card{
-    flex-direction: column;
     gap: 8px;
   }
 
   .project-thumb{
-    width: 100%;
-    height: 54px;
+    width: 64px;
+    height: 64px;
   }
 
   .project-title,
@@ -1620,10 +1646,14 @@ body.crt-on{
     max-height: calc(100dvh - 210px);
   }
 
-  .field-row,
+  .field-row{
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 6px;
+  }
+
   .skill-row{
-    grid-template-columns: 1fr;
-    gap: 4px;
+    grid-template-columns: 92px minmax(0, 1fr) 34px;
+    gap: 6px;
   }
 
   .skill-row em{
@@ -1654,30 +1684,40 @@ body.crt-on{
     overflow: hidden;
   }
 
+  .start-btn{
+    flex: 0 0 auto;
+  }
+
   .taskbar-items{
     gap: 2px;
-    padding-right: 2px;
+    padding: 2px;
   }
 
   .taskbar-item{
     min-width: 0;
-    max-width: 118px;
-    flex: 1 1 78px;
+    max-width: 96px;
+    flex: 1 1 58px;
     padding: 0 5px;
   }
 
   .systray{
-    gap: 4px;
-    padding: 0 5px;
+    gap: 3px;
+    padding: 0 4px;
     flex-shrink: 0;
   }
 
   .tray-icon{
-    display: none;
+    display: inline-flex;
+    padding: 0 1px;
+  }
+
+  .tray-icon img{
+    width: 15px;
+    height: 15px;
   }
 
   .clock{
-    min-width: 44px;
+    min-width: 42px;
     padding: 2px 0;
     font-size: 10px;
   }
@@ -1685,7 +1725,7 @@ body.crt-on{
   .xp-start{
     left: 4px;
     bottom: 32px;
-    width: calc(100vw - 8px);
+    width: min(380px, calc(100vw - 8px));
     max-height: calc(100dvh - 40px);
     border-radius: 6px 6px 0 0;
     overflow-y: auto;
@@ -1693,22 +1733,24 @@ body.crt-on{
   }
 
   .xp-start-body{
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .xp-start-header{
-    height: auto;
-    min-height: 54px;
+    height: 58px;
+    min-height: 58px;
   }
 
   .xp-start-footer{
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .xp-footer-btn,
   .xp-footer-btn-shutdown{
     min-width: 0;
-    flex: 1 1 130px;
+    flex: 1 1 auto;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 
   .run-dialog .window{
