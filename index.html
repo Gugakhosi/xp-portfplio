@@ -606,6 +606,62 @@
     </div>
   </div>
 
+  <!-- =========== WINDOW: INTERNET EXPLORER =========== -->
+  <div class="window ie-window" id="win-internet" data-title="Internet Explorer" data-icon="assets/xp/internet-explorer.ico" style="width:760px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/internet-explorer.ico" alt="">
+        Internet Explorer
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar">
+        <span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span>
+      </div>
+      <div class="ie-toolbar">
+        <button class="ie-btn" data-browser="back">Back</button>
+        <button class="ie-btn" data-browser="forward">Forward</button>
+        <button class="ie-btn ie-btn-red" data-browser="stop">Stop</button>
+        <button class="ie-btn" data-browser="refresh">Refresh</button>
+        <button class="ie-btn" data-browser="home">Home</button>
+        <span class="tb-sep"></span>
+        <button class="ie-btn" data-browser="search">Search</button>
+        <button class="ie-btn" data-browser="favorites">Favorites</button>
+      </div>
+      <div class="addressbar">
+        <label>Address</label>
+        <div class="address-input internet-address">
+          <img class="ai-icon" src="assets/xp/internet-explorer.ico" alt="">
+          <input id="internetAddress" value="https://guga.local/home" aria-label="Internet address">
+        </div>
+        <button class="ie-go" id="internetGo">Go</button>
+      </div>
+      <div class="internet-page" id="internetPage">
+        <div class="ie-header">
+          <h1>GugaNet Home</h1>
+          <p>A tiny Internet Explorer-style launcher for this portfolio.</p>
+        </div>
+        <div class="internet-shortcuts">
+          <button data-open="win-about"><img src="assets/desktop/about.webp" alt=""><span>About Me</span></button>
+          <button data-open="win-projects"><img src="assets/desktop/projects.webp" alt=""><span>Projects</span></button>
+          <button data-open="win-resume"><img src="assets/desktop/resume.webp" alt=""><span>Resume</span></button>
+          <a href="https://github.com/GugaKhosiauri" target="_blank" rel="noreferrer"><img src="assets/xp/network-places.ico" alt=""><span>GitHub</span></a>
+          <a href="https://linkedin.com/in/guga-khosiauri" target="_blank" rel="noreferrer"><img src="assets/xp/internet-explorer.ico" alt=""><span>LinkedIn</span></a>
+          <a href="https://www.google.com/search?q=Guga+Khosiauri" target="_blank" rel="noreferrer"><img src="assets/xp/search.ico" alt=""><span>Search Web</span></a>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="internetStatus">Done</p>
+        <p class="status-bar-field">Internet</p>
+      </div>
+    </div>
+  </div>
+
   <!-- =========== WINDOW: RESUME (PDF) =========== -->
   <div class="window" id="win-resume" data-title="Guga_Khosiauri_Resume_Visual.pdf" data-icon="assets/desktop/resume.webp" style="width:720px">
     <div class="title-bar" data-drag>
@@ -854,11 +910,15 @@ LEARNING
     <button data-ctx="view">
       <span class="ctx-label">View</span><span class="ctx-arrow">▶</span>
     </button>
-    <button data-ctx="arrange">Arrange Icons By</button>
+    <button data-ctx="icons-large">Large Icons</button>
+    <button data-ctx="icons-small">Small Icons</button>
+    <button data-ctx="arrange">Arrange Icons By Name</button>
     <button data-ctx="refresh">Refresh</button>
     <div class="ctx-sep"></div>
-    <button data-ctx="new">New</button>
+    <button data-ctx="wallpaper">Next Desktop Background</button>
+    <button data-ctx="new">New Shortcut</button>
     <div class="ctx-sep"></div>
+    <button data-ctx="internet">Open Internet Explorer</button>
     <button data-ctx="viewer">Open Image Viewer</button>
     <button data-ctx="cmd">Open Command Prompt</button>
     <div class="ctx-sep"></div>
@@ -890,7 +950,7 @@ LEARNING
   <div class="xp-start-body">
     <div class="xp-col left">
       <div class="xp-pinned">
-        <button class="xp-item big" data-open="win-projects">
+        <button class="xp-item big" data-open="win-internet">
           <img class="xp-item-icon" src="assets/xp/internet-explorer.ico" alt="">
           <div>
             <div class="xp-item-title">Internet</div>

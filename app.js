@@ -474,8 +474,8 @@ function runExecute(){
     explorer: "win-mycomputer", mycomputer: "win-mycomputer", "my computer": "win-mycomputer",
     documents: "win-documents", mydocs: "win-documents", "my documents": "win-documents",
     network: "win-network", links: "win-network", favorites: "win-network", "my network places": "win-network",
-    about: "win-about", projects: "win-projects", iexplore: "win-projects", ie: "win-projects",
-    "iexplore.exe": "win-projects", internet: "win-projects",
+    about: "win-about", projects: "win-projects", iexplore: "win-internet", ie: "win-internet",
+    "iexplore.exe": "win-internet", internet: "win-internet", browser: "win-internet",
     resume: "win-resume", notepad: "win-resume",
     contact: "win-contact", mail: "win-contact",
     skills: "win-skills", control: "win-skills", "control panel": "win-skills",
@@ -514,6 +514,20 @@ desktop.addEventListener("contextmenu", (e) => {
 });
 document.addEventListener("click", closeCtxMenu);
 function closeCtxMenu(){ ctxMenu.classList.add("hidden"); }
+const desktopWallpapers = [
+  'url("assets/bliss.jpg")',
+  'url("assets/gallery/xp-green-hills.svg")',
+  'url("assets/gallery/xp-blue-lake.svg")',
+  'url("assets/gallery/xp-sunset-field.svg")'
+];
+let wallpaperIdx = 0;
+function setDesktopWallpaper(index){
+  wallpaperIdx = (index + desktopWallpapers.length) % desktopWallpapers.length;
+  desktop.style.backgroundImage = desktopWallpapers[wallpaperIdx];
+}
+function nextDesktopWallpaper(){
+  setDesktopWallpaper(wallpaperIdx + 1);
+}
 function arrangeDesktopIcons(){
   const recycleIcon = $(".icon[data-open='win-recycle']");
   const icons = $$(".icon")
@@ -539,11 +553,20 @@ ctxMenu.addEventListener("click", (e) => {
   if (a === "arrange") {
     arrangeDesktopIcons();
   } else if (a === "refresh") {
+    tick();
     $$(".icon").forEach(i => { i.style.opacity = 0; setTimeout(() => i.style.opacity = 1, 120); });
+  } else if (a === "icons-large") {
+    desktop.classList.remove("small-icons");
+  } else if (a === "icons-small") {
+    desktop.classList.add("small-icons");
+  } else if (a === "wallpaper") {
+    nextDesktopWallpaper();
+  } else if (a === "internet") {
+    openWin("win-internet");
   } else if (a === "viewer")    openWin("win-viewer");
   else if (a === "cmd")         openWin("win-cmd");
   else if (a === "properties")  openWin("win-mycomputer");
-  else if (a === "new")         openWin("win-resume");
+  else if (a === "new")         openRunDialog();
   closeCtxMenu();
 });
 
@@ -565,12 +588,15 @@ function cmdWrite(text){
 const COMMANDS = {
   help(){
     cmdWrite("Available commands:");
-    cmdWrite("  help, cls, dir, whoami, date, time, ver, echo &lt;text&gt;");
+    cmdWrite("  help, cls, dir, tree, cd, type &lt;file&gt;, whoami, hostname");
+    cmdWrite("  date, time, ver, echo &lt;text&gt;, ipconfig, ping &lt;host&gt;");
+    cmdWrite("  systeminfo, tasklist, wallpaper, icons small|large");
     cmdWrite("  about, projects, resume, contact, skills, documents, links");
-    cmdWrite("  viewer, mycomputer, recycle");
-    cmdWrite("  start &lt;app&gt;, color, exit");
+    cmdWrite("  internet, viewer, mycomputer, recycle, github, linkedin");
+    cmdWrite("  start &lt;app&gt;, open &lt;url&gt;, color &lt;0a|07&gt;, exit");
   },
   cls(){ cmdLog.innerHTML = ""; },
+  clear(){ COMMANDS.cls(); },
   dir(){
     cmdWrite(" Volume in drive C has no label.");
     cmdWrite(" Volume Serial Number is G46A-XXXX");
@@ -587,24 +613,124 @@ const COMMANDS = {
     cmdWrite("               4 File(s)          7,168 bytes");
     cmdWrite("               3 Dir(s)   1,337,420,000 bytes free");
   },
+  tree(){
+    cmdWrite("C:\\Guga\\Portfolio");
+    cmdWrite("|-- about.txt");
+    cmdWrite("|-- Resume.pdf");
+    cmdWrite("|-- contact.vcf");
+    cmdWrite("|-- skills.inf");
+    cmdWrite("|-- My Documents");
+    cmdWrite("|   |-- Projects");
+    cmdWrite("|   |-- Pictures");
+    cmdWrite("|   `-- Web Links");
+    cmdWrite("`-- Desktop");
+  },
+  cd(args){
+    const path = args.join(" ") || "C:\\Guga";
+    cmdWrite(`C:\\Guga&gt;cd ${escapeHtml(path)}`);
+    cmdWrite("The portfolio command prompt stays in C:\\Guga.");
+  },
+  type(args){
+    const file = (args.join(" ") || "").toLowerCase();
+    if (file.includes("about")) {
+      cmdWrite("Hi, I'm Guga - a field computer technician who enjoys solving real-world tech problems.");
+      cmdWrite("I work with Windows systems, POS devices, printers, networking, hardware diagnostics, and user support.");
+    } else if (file.includes("contact")) {
+      cmdWrite("Email: gugaxosiauri@gmail.com");
+      cmdWrite("GitHub: github.com/GugaKhosiauri");
+      cmdWrite("LinkedIn: linkedin.com/in/guga-khosiauri");
+    } else if (file.includes("skill")) {
+      cmdWrite("Windows support, POS devices, printers, networking, diagnostics, HTML, CSS, JavaScript, Flutter learning.");
+    } else if (file.includes("resume")) {
+      openWin("win-resume");
+      cmdWrite("Opening Resume.pdf...");
+    } else {
+      cmdWrite("The system cannot find the file specified.");
+    }
+  },
   whoami(){ cmdWrite("GUGA-PC\\Guga"); },
+  hostname(){ cmdWrite("GUGA-PC"); },
   date(){ cmdWrite("The current date is: " + new Date().toDateString()); },
   time(){ cmdWrite("The current time is: " + new Date().toLocaleTimeString()); },
   ver(){  cmdWrite("Microsoft Windows XP [Version 5.1.2600]"); },
   echo(args){ cmdWrite(args.join(" ") || "ECHO is on."); },
+  ipconfig(){
+    cmdWrite("Windows IP Configuration");
+    cmdWrite("");
+    cmdWrite("Ethernet adapter Local Area Connection:");
+    cmdWrite("   Connection-specific DNS Suffix  . : portfolio.local");
+    cmdWrite("   IP Address. . . . . . . . . . . . : 192.168.1.24");
+    cmdWrite("   Subnet Mask . . . . . . . . . . . : 255.255.255.0");
+    cmdWrite("   Default Gateway . . . . . . . . . : 192.168.1.1");
+  },
+  ping(args){
+    const host = escapeHtml(args[0] || "guga.local");
+    cmdWrite(`Pinging ${host} [127.0.0.1] with 32 bytes of data:`);
+    cmdWrite(`Reply from 127.0.0.1: bytes=32 time&lt;1ms TTL=128`);
+    cmdWrite(`Reply from 127.0.0.1: bytes=32 time&lt;1ms TTL=128`);
+    cmdWrite(`Reply from 127.0.0.1: bytes=32 time&lt;1ms TTL=128`);
+    cmdWrite(`Reply from 127.0.0.1: bytes=32 time&lt;1ms TTL=128`);
+    cmdWrite("");
+    cmdWrite(`Ping statistics for 127.0.0.1: Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)`);
+  },
+  systeminfo(){
+    cmdWrite("Host Name:                 GUGA-PC");
+    cmdWrite("OS Name:                   Microsoft Windows XP Professional");
+    cmdWrite("System Type:               Portfolio Desktop");
+    cmdWrite("Registered Owner:          Guga Khosiauri");
+    cmdWrite("Role:                      Field Computer Technician");
+  },
+  tasklist(){
+    cmdWrite("Image Name                 PID Session Name     Mem Usage");
+    cmdWrite("========================= ==== ================ =========");
+    cmdWrite("explorer.exe              1337 Console          24,576 K");
+    cmdWrite("iexplore.exe              2600 Console          18,432 K");
+    cmdWrite("cmd.exe                   1998 Console           4,096 K");
+  },
   about(){     openWin("win-about");    cmdWrite("Opening About Me..."); },
   projects(){  openWin("win-projects"); cmdWrite("Opening My Projects..."); },
   resume(){    openWin("win-resume");   cmdWrite("Opening Resume..."); },
   contact(){   openWin("win-contact");  cmdWrite("Opening Contact..."); },
   skills(){    openWin("win-skills");   cmdWrite("Opening Control Panel..."); },
+  internet(){  openWin("win-internet"); cmdWrite("Opening Internet Explorer..."); },
   documents(){ openWin("win-documents"); cmdWrite("Opening My Documents..."); },
   network(){   openWin("win-network");  cmdWrite("Opening Web Links..."); },
   links(){     openWin("win-network");  cmdWrite("Opening Web Links..."); },
   viewer(){    openWin("win-viewer");   cmdWrite("Opening Picture Viewer..."); },
   mycomputer(){ openWin("win-mycomputer"); cmdWrite("Opening My Computer..."); },
   recycle(){   openWin("win-recycle");  cmdWrite("Opening Recycle Bin..."); },
-  start(args){ const m = { about:"win-about", projects:"win-projects", resume:"win-resume", contact:"win-contact", skills:"win-skills", cmd:"win-cmd", explorer:"win-mycomputer", documents:"win-documents", network:"win-network", links:"win-network", iexplore:"win-projects" }; const w = m[(args[0] || "").toLowerCase()]; if (w){ openWin(w); cmdWrite(`Starting ${args[0]}...`); } else cmdWrite(`Unknown app: ${args[0] || ""}`); },
-  color(){ cmdWrite("Color is already cool. (stubbed)"); },
+  github(){ window.open("https://github.com/GugaKhosiauri", "_blank", "noopener"); cmdWrite("Opening GitHub..."); },
+  linkedin(){ window.open("https://linkedin.com/in/guga-khosiauri", "_blank", "noopener"); cmdWrite("Opening LinkedIn..."); },
+  wallpaper(){ nextDesktopWallpaper(); cmdWrite("Desktop background changed."); },
+  icons(args){
+    if ((args[0] || "").toLowerCase() === "small") {
+      desktop.classList.add("small-icons");
+      cmdWrite("Desktop icons set to small.");
+    } else {
+      desktop.classList.remove("small-icons");
+      cmdWrite("Desktop icons set to large.");
+    }
+  },
+  open(args){
+    const raw = args.join(" ");
+    if (!raw) return cmdWrite("Usage: open &lt;url&gt;");
+    const url = raw.includes("://") ? raw : `https://${raw}`;
+    window.open(url, "_blank", "noopener");
+    cmdWrite(`Opening ${escapeHtml(url)}...`);
+  },
+  start(args){ const m = { about:"win-about", projects:"win-projects", resume:"win-resume", contact:"win-contact", skills:"win-skills", cmd:"win-cmd", explorer:"win-mycomputer", documents:"win-documents", network:"win-network", links:"win-network", internet:"win-internet", iexplore:"win-internet", browser:"win-internet", viewer:"win-viewer" }; const w = m[(args[0] || "").toLowerCase()]; if (w){ openWin(w); cmdWrite(`Starting ${escapeHtml(args[0])}...`); } else cmdWrite(`Unknown app: ${escapeHtml(args[0] || "")}`); },
+  color(args){
+    const value = (args[0] || "").toLowerCase();
+    if (value === "0a") {
+      $("#cmdBody").style.color = "#00ff00";
+      cmdWrite("Color set to green.");
+    } else if (value === "07" || !value) {
+      $("#cmdBody").style.color = "#fff";
+      cmdWrite("Color set to default.");
+    } else {
+      cmdWrite("Supported colors: 0a, 07");
+    }
+  },
   exit(){ closeWin("win-cmd"); }
 };
 
@@ -638,8 +764,11 @@ function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;"
 
 /* ---------- IMAGE VIEWER ---------- */
 const gallery = [
-  { src: "assets/bliss-crop.jpg",     name: "Bliss.jpg" },
-  { src: "assets/avatar.png",         name: "Guga.png" },
+  { src: "assets/bliss.jpg",                         name: "Bliss.jpg" },
+  { src: "assets/gallery/xp-green-hills.svg",        name: "Green Hills.jpg" },
+  { src: "assets/gallery/xp-blue-lake.svg",          name: "Blue Lake.jpg" },
+  { src: "assets/gallery/xp-sunset-field.svg",       name: "Sunset Field.jpg" },
+  { src: "assets/avatar.png",                        name: "Guga.png" },
 ];
 let galleryIdx = 0;
 let viewerScale = 1;
@@ -677,8 +806,80 @@ $("#contactForm")?.addEventListener("submit", (e) => {
   window.location.href = `mailto:gugaxosiauri@gmail.com?subject=${subj}&body=${body}`;
 });
 
+/* ---------- INTERNET EXPLORER WINDOWS ---------- */
+function setInternetStatus(text){
+  const status = $("#internetStatus");
+  if (status) status.textContent = text;
+}
+function renderInternetHome(){
+  const page = $("#internetPage");
+  if (!page) return;
+  page.innerHTML = `
+    <div class="ie-header">
+      <h1>GugaNet Home</h1>
+      <p>A tiny Internet Explorer-style launcher for this portfolio.</p>
+    </div>
+    <div class="internet-shortcuts">
+      <button data-open="win-about"><img src="assets/desktop/about.webp" alt=""><span>About Me</span></button>
+      <button data-open="win-projects"><img src="assets/desktop/projects.webp" alt=""><span>Projects</span></button>
+      <button data-open="win-resume"><img src="assets/desktop/resume.webp" alt=""><span>Resume</span></button>
+      <a href="https://github.com/GugaKhosiauri" target="_blank" rel="noreferrer"><img src="assets/xp/network-places.ico" alt=""><span>GitHub</span></a>
+      <a href="https://linkedin.com/in/guga-khosiauri" target="_blank" rel="noreferrer"><img src="assets/xp/internet-explorer.ico" alt=""><span>LinkedIn</span></a>
+      <a href="https://www.google.com/search?q=Guga+Khosiauri" target="_blank" rel="noreferrer"><img src="assets/xp/search.ico" alt=""><span>Search Web</span></a>
+    </div>`;
+}
+function navigateInternet(raw){
+  const input = $("#internetAddress");
+  const page = $("#internetPage");
+  const value = (raw || input?.value || "").trim();
+  if (!value) return;
+  setInternetStatus("Loading...");
+  if (/^(home|about:home|https:\/\/guga\.local\/home)$/i.test(value)) {
+    if (input) input.value = "https://guga.local/home";
+    renderInternetHome();
+    setInternetStatus("Done");
+    return;
+  }
+  const localMap = {
+    about: "win-about",
+    projects: "win-projects",
+    resume: "win-resume",
+    contact: "win-contact",
+    pictures: "win-viewer",
+  };
+  const local = localMap[value.toLowerCase()];
+  if (local) {
+    openWin(local);
+    setInternetStatus("Done");
+    return;
+  }
+  const url = value.includes("://") ? value : `https://${value}`;
+  if (page) {
+    page.innerHTML = `
+      <div class="ie-header">
+        <h1>Opening external page</h1>
+        <p>Modern sites often block being embedded inside old-style frames. Internet Explorer will open this address in a new tab.</p>
+      </div>
+      <p><a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(url)}</a></p>`;
+  }
+  window.open(url, "_blank", "noopener");
+  setInternetStatus("Opened in new tab");
+}
+$("#internetGo")?.addEventListener("click", () => navigateInternet());
+$("#internetAddress")?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") navigateInternet();
+});
+$$("[data-browser]").forEach(btn => btn.addEventListener("click", () => {
+  const action = btn.dataset.browser;
+  if (action === "home") navigateInternet("home");
+  else if (action === "search") navigateInternet("https://www.google.com/search?q=Guga+Khosiauri");
+  else if (action === "favorites") openWin("win-network");
+  else if (action === "refresh") navigateInternet($("#internetAddress")?.value || "home");
+  else setInternetStatus(action === "stop" ? "Stopped" : "Done");
+}));
+
 /* ---------- IE toolbar stub ---------- */
-$$(".ie-btn").forEach(b => b.addEventListener("click", () => {
+$$(".ie-btn:not([data-browser])").forEach(b => b.addEventListener("click", () => {
   const status = $("#ieStatus");
   if (!status) return;
   status.textContent = "Loading...";

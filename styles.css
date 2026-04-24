@@ -362,6 +362,18 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
 }
 .icon.selected .icon-svg,
 .icon.selected .icon-image{ filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5)) brightness(0.92); }
+.desktop.small-icons .icon{
+  width: 68px;
+  font-size: 10px;
+}
+.desktop.small-icons .icon-image,
+.desktop.small-icons .icon-svg{
+  width: 32px;
+  height: 32px;
+}
+.desktop.small-icons .icon span{
+  max-width: 64px;
+}
 
 /* =================================================
    WINDOWS (xp.css supplies base chrome; we add extras)
@@ -636,6 +648,53 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
   font-size: 10px; padding: 1px 6px;
   background: #e2e2e2; border: 1px solid #bbb;
   border-radius: 9px;
+}
+.internet-address input{
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: 11px Tahoma, sans-serif;
+}
+.internet-page{
+  background: #fff;
+  border: 1px solid #aca899;
+  padding: 18px;
+  min-height: 340px;
+  overflow: auto;
+}
+.internet-shortcuts{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+.internet-shortcuts button,
+.internet-shortcuts a{
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+  text-decoration: none;
+  background: #f6f8fb;
+  border: 1px solid #c8d0dd;
+  cursor: pointer;
+  font: 12px Tahoma, sans-serif;
+}
+.internet-shortcuts button:hover,
+.internet-shortcuts a:hover{
+  background: #e8f1fd;
+  border-color: #1b4a94;
+}
+.internet-shortcuts img{
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 /* =================================================

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2577da"/>
+      <stop offset="0.55" stop-color="#8fc7ff"/>
+      <stop offset="1" stop-color="#d8efff"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6ed037"/>
+      <stop offset="1" stop-color="#1d7b1f"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="800" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".9" filter="url(#soft)">
+    <ellipse cx="220" cy="145" rx="78" ry="28"/>
+    <ellipse cx="280" cy="138" rx="100" ry="34"/>
+    <ellipse cx="362" cy="152" rx="82" ry="24"/>
+    <ellipse cx="940" cy="210" rx="95" ry="30"/>
+    <ellipse cx="1030" cy="202" rx="128" ry="38"/>
+    <ellipse cx="1135" cy="218" rx="90" ry="26"/>
+  </g>
+  <path d="M0 570 C240 440 430 420 650 520 C880 625 1010 505 1280 470 L1280 800 L0 800 Z" fill="#3ead28"/>
+  <path d="M0 640 C230 510 520 490 800 605 C980 680 1120 612 1280 570 L1280 800 L0 800 Z" fill="url(#grass)"/>
+  <g opacity=".22" stroke="#fff" stroke-width="2">
+    <path d="M70 715 C260 590 430 560 630 660"/>
+    <path d="M230 755 C450 620 680 590 960 710"/>
+    <path d="M650 780 C820 690 1030 650 1220 720"/>
+  </g>
+</svg>
