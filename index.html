@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guga Khosiauri — Windows XP</title>
+  <link rel="stylesheet" href="https://unpkg.com/xp.css">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/xp/my-computer.ico" />
+</head>
+<body>
+
+<!-- =========================================================
+     ICON SPRITE — authentic XP-style icons drawn as inline SVG
+     ========================================================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+
+    <linearGradient id="mc-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a95e9"/>
+      <stop offset="1" stop-color="#1b4a94"/>
+    </linearGradient>
+
+    <!-- My Computer -->
+    <symbol id="i-mycomputer" viewBox="0 0 48 48">
+      <rect x="4" y="6" width="40" height="26" rx="1" fill="#d4d0c8" stroke="#4a4a4a"/>
+      <rect x="6" y="8" width="36" height="22" fill="url(#mc-grad)"/>
+      <rect x="16" y="34" width="16" height="4" fill="#a9a9a9"/>
+      <rect x="10" y="38" width="28" height="6" fill="#d4d0c8" stroke="#4a4a4a"/>
+      <rect x="12" y="40" width="24" height="2" fill="#8a8a8a"/>
+    </symbol>
+
+    <!-- Recycle Bin (empty) -->
+    <symbol id="i-recycle" viewBox="0 0 48 48">
+      <path d="M10 14 L38 14 L35 42 L13 42 Z" fill="#c8c8c8" stroke="#666"/>
+      <path d="M14 18 L34 18 L32 40 L16 40 Z" fill="#80b3ff" opacity=".5"/>
+      <rect x="8" y="10" width="32" height="5" rx="1" fill="#d4d0c8" stroke="#666"/>
+      <circle cx="24" cy="25" r="7" fill="none" stroke="#1a7a1a" stroke-width="2"/>
+      <path d="M19 25 L24 20 L24 23 L29 23 L29 27 L24 27 L24 30 Z" fill="#1a7a1a"/>
+    </symbol>
+
+    <!-- User / About -->
+    <symbol id="i-user" viewBox="0 0 48 48">
+      <rect x="4" y="6" width="40" height="36" rx="2" fill="#ffce4f" stroke="#9a6a00"/>
+      <circle cx="24" cy="20" r="7" fill="#ffe3a2" stroke="#8a5500"/>
+      <path d="M10 40 C12 30 36 30 38 40 Z" fill="#ffe3a2" stroke="#8a5500"/>
+      <rect x="4" y="6" width="40" height="6" fill="#f0b814"/>
+    </symbol>
+
+    <!-- Folder -->
+    <symbol id="i-folder" viewBox="0 0 48 48">
+      <path d="M6 14 L18 14 L22 18 L42 18 L42 40 L6 40 Z" fill="#f0c84a" stroke="#8a5500"/>
+      <path d="M6 20 L42 20 L42 40 L6 40 Z" fill="#ffd964"/>
+      <rect x="18" y="12" width="8" height="4" fill="#d4a837"/>
+    </symbol>
+
+    <!-- IE / Internet -->
+    <symbol id="i-ie" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="18" fill="#e6eefb" stroke="#0a3a80"/>
+      <ellipse cx="24" cy="24" rx="18" ry="8" fill="none" stroke="#0a3a80" stroke-width="1.5"/>
+      <ellipse cx="24" cy="24" rx="8" ry="18" fill="none" stroke="#0a3a80" stroke-width="1.5"/>
+      <path d="M10 24 C18 18 30 18 38 22" fill="none" stroke="#0a3a80" stroke-width="1.5"/>
+      <text x="24" y="31" text-anchor="middle" font-family="Times New Roman" font-style="italic" font-weight="bold" font-size="24" fill="#0a3a80">e</text>
+    </symbol>
+
+    <!-- Notepad -->
+    <symbol id="i-notepad" viewBox="0 0 48 48">
+      <rect x="8" y="4" width="32" height="40" fill="#fff" stroke="#444"/>
+      <rect x="8" y="4" width="32" height="4" fill="#2b5aa8"/>
+      <line x1="12" y1="14" x2="36" y2="14" stroke="#a8b6c8" stroke-width="1"/>
+      <line x1="12" y1="18" x2="36" y2="18" stroke="#a8b6c8" stroke-width="1"/>
+      <line x1="12" y1="22" x2="36" y2="22" stroke="#a8b6c8" stroke-width="1"/>
+      <line x1="12" y1="26" x2="32" y2="26" stroke="#a8b6c8" stroke-width="1"/>
+      <line x1="12" y1="30" x2="36" y2="30" stroke="#a8b6c8" stroke-width="1"/>
+      <line x1="12" y1="34" x2="28" y2="34" stroke="#a8b6c8" stroke-width="1"/>
+      <line x1="12" y1="38" x2="34" y2="38" stroke="#a8b6c8" stroke-width="1"/>
+    </symbol>
+
+    <!-- Mail / Contact -->
+    <symbol id="i-mail" viewBox="0 0 48 48">
+      <rect x="4" y="10" width="40" height="28" rx="1" fill="#fff" stroke="#444"/>
+      <path d="M4 10 L24 26 L44 10" fill="none" stroke="#444" stroke-width="1.5"/>
+      <path d="M4 10 L24 26 L44 10 L44 38 L4 38 Z" fill="#e8f1fd" opacity=".6"/>
+    </symbol>
+
+    <!-- Command Prompt -->
+    <symbol id="i-cmd" viewBox="0 0 48 48">
+      <rect x="4" y="6" width="40" height="36" rx="1" fill="#000" stroke="#444"/>
+      <text x="8" y="20" font-family="Consolas,monospace" font-size="9" fill="#fff">C:\&gt;</text>
+      <text x="8" y="32" font-family="Consolas,monospace" font-size="9" fill="#fff">_</text>
+    </symbol>
+
+    <!-- Paint -->
+    <symbol id="i-paint" viewBox="0 0 48 48">
+      <rect x="6" y="8" width="36" height="28" fill="#fff" stroke="#444"/>
+      <circle cx="14" cy="16" r="3" fill="#e74c3c"/>
+      <circle cx="22" cy="16" r="3" fill="#2ecc71"/>
+      <circle cx="30" cy="16" r="3" fill="#3498db"/>
+      <circle cx="38" cy="16" r="3" fill="#f1c40f"/>
+      <path d="M10 28 L18 20 L26 28 L34 22 L40 28" stroke="#000" stroke-width="1.5" fill="none"/>
+      <rect x="6" y="36" width="36" height="4" fill="#c8c8c8" stroke="#444"/>
+    </symbol>
+
+    <!-- Settings gear -->
+    <symbol id="i-settings" viewBox="0 0 48 48">
+      <rect x="6" y="6" width="36" height="36" rx="2" fill="#d4d0c8" stroke="#666"/>
+      <circle cx="24" cy="24" r="10" fill="none" stroke="#1b4a94" stroke-width="3"/>
+      <circle cx="24" cy="24" r="3" fill="#1b4a94"/>
+    </symbol>
+
+    <!-- Start orb -->
+    <symbol id="i-start-flag" viewBox="0 0 24 24">
+      <rect x="2" y="5" width="8" height="6" fill="#ff3b3b"/>
+      <rect x="12" y="5" width="8" height="6" fill="#3cb54a"/>
+      <rect x="2" y="13" width="8" height="6" fill="#2a74c4"/>
+      <rect x="12" y="13" width="8" height="6" fill="#ffc107"/>
+    </symbol>
+
+    <!-- Help (blue question) -->
+    <symbol id="i-help" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="18" fill="#3a8cd9" stroke="#1b4a94"/>
+      <text x="24" y="32" text-anchor="middle" font-family="Arial Black" font-size="22" font-weight="900" fill="#fff">?</text>
+    </symbol>
+
+    <!-- Run -->
+    <symbol id="i-run" viewBox="0 0 48 48">
+      <rect x="4" y="10" width="40" height="28" rx="2" fill="#d4d0c8" stroke="#666"/>
+      <rect x="8" y="16" width="32" height="10" fill="#fff" stroke="#888"/>
+      <rect x="10" y="28" width="10" height="6" fill="#c8c8c8" stroke="#888"/>
+      <rect x="22" y="28" width="10" height="6" fill="#c8c8c8" stroke="#888"/>
+    </symbol>
+
+    <!-- Search -->
+    <symbol id="i-search" viewBox="0 0 48 48">
+      <circle cx="20" cy="20" r="11" fill="#fff" stroke="#1b4a94" stroke-width="2"/>
+      <line x1="28" y1="28" x2="40" y2="40" stroke="#1b4a94" stroke-width="4"/>
+    </symbol>
+
+    <!-- Music -->
+    <symbol id="i-music" viewBox="0 0 48 48">
+      <path d="M20 6 L36 10 L36 32 L32 34 L32 12 L22 10 L22 38 L18 40 Z" fill="#2a74c4" stroke="#0b2f55"/>
+      <circle cx="14" cy="38" r="5" fill="#2a74c4" stroke="#0b2f55"/>
+      <circle cx="28" cy="32" r="5" fill="#2a74c4" stroke="#0b2f55"/>
+    </symbol>
+
+    <!-- Picture -->
+    <symbol id="i-picture" viewBox="0 0 48 48">
+      <rect x="4" y="6" width="40" height="36" fill="#fff" stroke="#444"/>
+      <rect x="6" y="8" width="36" height="26" fill="#87ceeb"/>
+      <circle cx="14" cy="16" r="3" fill="#ffeb3b"/>
+      <path d="M6 34 L16 24 L24 30 L32 20 L42 32 L42 34 Z" fill="#66bb6a"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+<!-- BOOT SCREEN -->
+<section class="boot-screen" id="bootScreen">
+  <div class="boot-inner">
+    <img class="boot-image" src="assets/loading/loading.png" alt="Windows XP">
+    <div class="boot-bar"><div class="boot-bar-inner"></div></div>
+  </div>
+  <div class="boot-copyright">Copyright &copy; 1985-2001<br>Microsoft Corporation</div>
+  <div class="boot-microsoft">Microsoft</div>
+</section>
+
+<!-- LOGIN SCREEN -->
+<section class="login-screen hidden" id="loginScreen">
+  <div class="login-top"></div>
+
+  <div class="login-middle">
+    <div class="login-brand" aria-hidden="true">
+      <img class="login-welcome-image" src="assets/loading/loading.png" alt="Windows XP">
+      <div class="login-brand-kicker">To begin, click your user name</div>
+    </div>
+    <button class="user-card" id="loginBtn">
+      <img src="assets/avatar.png" alt="Guga" class="user-avatar" />
+      <div class="user-text">
+        <div class="user-name">Guga Khosiauri</div>
+        <div class="user-hint">Click to log on</div>
+        <div class="user-status">Portfolio Desktop</div>
+      </div>
+    </button>
+  </div>
+
+  <div class="login-bottom">
+    <div class="login-bottom-left">
+      <button class="power-btn" id="loginPowerBtn" title="Turn off computer">
+        <img class="power-icon-image" src="assets/xp-user/power.png" alt="">
+        <span>Turn off computer</span>
+      </button>
+    </div>
+    <div class="login-bottom-right">
+      After you log on, you can add or change accounts.<br>
+      Just go to Control Panel and click User Accounts.
+    </div>
+  </div>
+</section>
+
+<!-- WELCOME SCREEN -->
+<section class="welcome-screen hidden" id="welcomeScreen">
+  <div class="welcome-top"></div>
+  <div class="welcome-middle">
+    <span class="welcome-text">welcome</span>
+  </div>
+  <div class="welcome-bottom"></div>
+</section>
+
+<!-- DESKTOP -->
+<main class="desktop hidden" id="desktop">
+
+  <!-- Desktop Icons -->
+  <button class="icon" data-open="win-about" style="top: 14px; left: 14px;">
+    <img class="icon-image" src="assets/desktop/about.webp" alt="">
+    <span>About Me</span>
+  </button>
+
+  <button class="icon" data-open="win-projects" style="top: 108px; left: 14px;">
+    <img class="icon-image" src="assets/desktop/projects.webp" alt="">
+    <span>My Projects</span>
+  </button>
+
+  <button class="icon" data-open="win-resume" style="top: 202px; left: 14px;">
+    <img class="icon-image" src="assets/desktop/resume.webp" alt="">
+    <span>Resume.txt</span>
+  </button>
+
+  <button class="icon" data-open="win-contact" style="top: 296px; left: 14px;">
+    <img class="icon-image" src="assets/desktop/contact.webp" alt="">
+    <span>Contact Me</span>
+  </button>
+
+  <button class="icon" data-open="win-recycle" style="top: 14px; right: 14px; left:auto;">
+    <img class="icon-image" id="desktopRecycleIcon" src="assets/xp/recycle-empty.ico" alt="">
+    <span>Recycle Bin</span>
+  </button>
+
+
+  <!-- =========== WINDOW: MY COMPUTER =========== -->
+  <div class="window" id="win-mycomputer" data-title="My Computer" data-icon="assets/xp/my-computer.ico" style="width:680px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/my-computer.ico" alt="">
+        My Computer
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space" role="tabpanel">
+      <div class="menubar">
+        <span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span>
+      </div>
+      <div class="toolbar">
+        <button class="tb-btn">Back</button>
+        <button class="tb-btn">Forward</button>
+        <button class="tb-btn">Up</button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn">Search</button>
+        <button class="tb-btn">Folders</button>
+      </div>
+      <div class="addressbar">
+        <label>Address</label>
+        <div class="address-input">
+          <img class="ai-icon" src="assets/xp/my-computer.ico" alt="">
+          <span>My Computer</span>
+        </div>
+      </div>
+      <div class="mc-body">
+        <aside class="mc-sidebar">
+          <div class="panel">
+            <div class="panel-title">System Tasks</div>
+            <div class="panel-body">
+              <a data-open="win-projects">View portfolio projects</a>
+              <a data-open="win-resume">Open Resume.txt</a>
+              <a data-open="win-contact">Send e-mail</a>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Other Places</div>
+            <div class="panel-body">
+              <a data-open="win-documents">My Documents</a>
+              <a data-open="win-network">Web Links</a>
+              <a data-open="win-viewer">My Pictures</a>
+              <a data-open="win-skills">Control Panel</a>
+            </div>
+          </div>
+        </aside>
+        <section class="mc-content">
+          <div class="group-title">Portfolio Places</div>
+          <div class="file-grid">
+            <button class="file-item" data-open="win-documents">
+              <img src="assets/xp/my-documents.ico" alt="">
+              <span>My Documents</span>
+            </button>
+            <button class="file-item" data-open="win-network">
+              <img src="assets/xp/network-places.ico" alt="">
+              <span>Web Links</span>
+            </button>
+            <button class="file-item" data-open="win-viewer">
+              <img src="assets/xp/pictures.ico" alt="">
+              <span>My Pictures</span>
+            </button>
+            <button class="file-item" data-open="win-projects">
+              <img src="assets/xp/internet-explorer.ico" alt="">
+              <span>My Projects</span>
+            </button>
+            <button class="file-item" data-open="win-contact">
+              <img src="assets/xp/email.ico" alt="">
+              <span>Contact.vcf</span>
+            </button>
+            <button class="file-item" data-open="win-skills">
+              <img src="assets/xp/control-panel.ico" alt="">
+              <span>Control Panel</span>
+            </button>
+          </div>
+          <div class="group-title">Working Files</div>
+          <div class="file-grid">
+            <button class="file-item" data-open="win-resume">
+              <img src="assets/xp/notepad.ico" alt="">
+              <span>Resume.txt</span>
+            </button>
+            <button class="file-item" data-open="win-skills">
+              <img src="assets/xp/control-panel.ico" alt="">
+              <span>Skills.inf</span>
+            </button>
+            <button class="file-item" data-open="win-cmd">
+              <svg><use href="#i-cmd"/></svg>
+              <span>Command Prompt</span>
+            </button>
+            <button class="file-item">
+              <img src="assets/xp/my-computer.ico" alt="">
+              <span>Local Disk (C:)</span>
+            </button>
+          </div>
+        </section>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">10 objects</p>
+        <p class="status-bar-field">My Computer</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: MY DOCUMENTS =========== -->
+  <div class="window" id="win-documents" data-title="My Documents" data-icon="assets/xp/my-documents.ico" style="width:680px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/my-documents.ico" alt="">
+        My Documents
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar">
+        <span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span>
+      </div>
+      <div class="toolbar">
+        <button class="tb-btn">Back</button>
+        <button class="tb-btn">Forward</button>
+        <button class="tb-btn">Up</button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn">Search</button>
+        <button class="tb-btn">Folders</button>
+      </div>
+      <div class="addressbar">
+        <label>Address</label>
+        <div class="address-input">
+          <img class="ai-icon" src="assets/xp/my-documents.ico" alt="">
+          <span>C:\Documents and Settings\Guga\My Documents</span>
+        </div>
+      </div>
+      <div class="mc-body">
+        <aside class="mc-sidebar">
+          <div class="panel">
+            <div class="panel-title">File and Folder Tasks</div>
+            <div class="panel-body">
+              <a data-open="win-about">Open About Me</a>
+              <a data-open="win-resume">Open Resume.txt</a>
+              <a data-open="win-viewer">Open Portrait Picture</a>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Other Places</div>
+            <div class="panel-body">
+              <a data-open="win-mycomputer">My Computer</a>
+              <a data-open="win-network">Web Links</a>
+              <a data-open="win-projects">My Projects</a>
+              <a data-open="win-skills">Control Panel</a>
+            </div>
+          </div>
+        </aside>
+        <section class="mc-content">
+          <div class="group-title">Portfolio Files</div>
+          <div class="file-grid">
+            <button class="file-item" data-open="win-about">
+              <img src="assets/xp/folder.ico" alt="">
+              <span>About Guga</span>
+            </button>
+            <button class="file-item" data-open="win-resume">
+              <img src="assets/xp/notepad.ico" alt="">
+              <span>Resume.txt</span>
+            </button>
+            <button class="file-item" data-open="win-contact">
+              <img src="assets/desktop/contact.webp" alt="">
+              <span>Contact Me</span>
+            </button>
+            <button class="file-item" data-open="win-projects">
+              <img src="assets/desktop/projects.webp" alt="">
+              <span>Projects.url</span>
+            </button>
+          </div>
+        </section>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">4 objects</p>
+        <p class="status-bar-field">My Documents</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: WEB LINKS =========== -->
+  <div class="window" id="win-network" data-title="Web Links" data-icon="assets/xp/network-places.ico" style="width:560px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/network-places.ico" alt="">
+        Web Links
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar"><span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span></div>
+      <div class="toolbar">
+        <button class="tb-btn">Back</button>
+        <button class="tb-btn">Forward</button>
+        <button class="tb-btn">Up</button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn">Search</button>
+      </div>
+      <div class="addressbar">
+        <label>Address</label>
+        <div class="address-input">
+          <img class="ai-icon" src="assets/xp/network-places.ico" alt="">
+          <span>C:\Documents and Settings\Guga\Favorites</span>
+        </div>
+      </div>
+      <div class="network-body">
+        <div class="group-title">Places on the Web</div>
+        <div class="file-grid">
+          <a class="file-item" href="https://github.com/GugaKhosiauri" target="_blank" rel="noreferrer">
+            <img src="assets/xp/internet-explorer.ico" alt="">
+            <span>GitHub</span>
+          </a>
+          <a class="file-item" href="https://linkedin.com/in/guga-khosiauri" target="_blank" rel="noreferrer">
+            <img src="assets/xp/network-places.ico" alt="">
+            <span>LinkedIn</span>
+          </a>
+          <button class="file-item" data-open="win-contact">
+            <img src="assets/xp/email.ico" alt="">
+            <span>Email Guga</span>
+          </button>
+          <button class="file-item" data-open="win-projects">
+            <img src="assets/xp/internet-explorer.ico" alt="">
+            <span>Portfolio</span>
+          </button>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">4 objects</p>
+        <p class="status-bar-field">Web Links</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: ABOUT ME =========== -->
+  <div class="window" id="win-about" data-title="About Me" data-icon="assets/xp/my-documents.ico" style="width:560px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/my-documents.ico" alt="">
+        About Me
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar"><span>File</span><span>Edit</span><span>View</span><span>Help</span></div>
+      <div class="about-layout">
+        <div class="about-left">
+          <div class="polaroid">
+            <img src="assets/avatar.png" alt="Guga">
+          </div>
+          <div class="name-tag">Guga Khosiauri</div>
+          <div class="role-tag">Web Developer (in training)</div>
+        </div>
+        <div class="about-right">
+          <h2>About Guga</h2>
+          <p>I'm a beginner web developer from Georgia, learning HTML, CSS, and JavaScript and building simple projects to keep improving.</p>
+          <p>Right now I'm focused on frontend fundamentals, cleaner interfaces, and a Flutter side project called <b>MyCashier</b>.</p>
+          <fieldset style="margin-top:10px">
+            <legend>What I'm into</legend>
+            <ul class="tight">
+              <li>Front-end web development</li>
+              <li>Clean UI design & retro interfaces</li>
+              <li>Learning by shipping small projects</li>
+            </ul>
+          </fieldset>
+        </div>
+      </div>
+      <div class="status-bar"><p class="status-bar-field">Ready</p></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: PROJECTS (IE) =========== -->
+  <div class="window ie-window" id="win-projects" data-title="My Projects - Microsoft Internet Explorer" data-icon="assets/xp/internet-explorer.ico" style="width:760px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/internet-explorer.ico" alt="">
+        My Projects - Microsoft Internet Explorer
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar">
+        <span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span>
+      </div>
+      <div class="ie-toolbar">
+        <button class="ie-btn"><span class="ie-btn-arrow">Back</span></button>
+        <button class="ie-btn"><span class="ie-btn-arrow">Forward</span></button>
+        <button class="ie-btn ie-btn-red">Stop</button>
+        <button class="ie-btn">Refresh</button>
+        <button class="ie-btn">Home</button>
+        <span class="tb-sep"></span>
+        <button class="ie-btn">Search</button>
+        <button class="ie-btn">Favorites</button>
+        <button class="ie-btn">History</button>
+      </div>
+      <div class="addressbar">
+        <label>Address</label>
+        <div class="address-input">
+          <img class="ai-icon" src="assets/xp/internet-explorer.ico" alt="">
+          <span id="ieAddress">https://guga.dev/projects</span>
+        </div>
+        <button class="ie-go">Go</button>
+      </div>
+      <div class="ie-content">
+        <div class="ie-header">
+          <h1>My Projects</h1>
+          <p>Things I've built while learning. Click a card to visit the project.</p>
+        </div>
+        <div class="projects-grid">
+
+          <a class="project-card" href="./catchcash/" target="_blank" rel="noreferrer">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#2b8cff,#0e4bb3);color:#fff">CC</div>
+            <div class="project-info">
+              <div class="project-title">MyCashier (CatchCash)</div>
+              <div class="project-desc">Flutter-based personal spending tracker — categories, budgets, monthly stats.</div>
+              <div class="project-tags"><span>Flutter</span><span>Dart</span><span>Mobile</span></div>
+            </div>
+          </a>
+
+          <a class="project-card" data-project="movie">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#9b59b6,#5b2780);color:#fff">MR</div>
+            <div class="project-info">
+              <div class="project-title">Movie Ranking</div>
+              <div class="project-desc">A small HTML/JS project for ranking favourite movies.</div>
+              <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+            </div>
+          </a>
+
+          <a class="project-card" data-project="invite">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#ff7f7f,#c63d3d);color:#fff">BI</div>
+            <div class="project-info">
+              <div class="project-title">Birthday Invite</div>
+              <div class="project-desc">Animated invite card built while learning CSS transitions.</div>
+              <div class="project-tags"><span>HTML</span><span>CSS</span></div>
+            </div>
+          </a>
+
+          <a class="project-card" data-project="xp">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#3cb54a,#168b2c);color:#fff">XP</div>
+            <div class="project-info">
+              <div class="project-title">XP Portfolio (this site)</div>
+              <div class="project-desc">Windows XP desktop recreated in HTML/CSS/JS. You're inside it.</div>
+              <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="ieStatus">Done</p>
+        <p class="status-bar-field">Internet</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: RESUME (NOTEPAD) =========== -->
+  <div class="window" id="win-resume" data-title="Resume.txt - Notepad" data-icon="assets/xp/notepad.ico" style="width:580px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/notepad.ico" alt="">
+        Resume.txt - Notepad
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body" style="margin:0; padding:0; border:none">
+      <div class="menubar"><span>File</span><span>Edit</span><span>Format</span><span>View</span><span>Help</span></div>
+      <div class="notepad"><pre>================================================================
+                GUGA KHOSIAURI — RESUME
+================================================================
+
+CONTACT
+  Email     :  gugaxosiauri@gmail.com
+  Location  :  Georgia
+  GitHub    :  github.com/GugaKhosiauri
+  LinkedIn  :  linkedin.com/in/guga-khosiauri
+
+----------------------------------------------------------------
+OBJECTIVE
+----------------------------------------------------------------
+  Beginner web developer aiming to grow into a solid
+  front-end engineer. Currently building small projects
+  to master HTML, CSS, JavaScript, and Flutter.
+
+----------------------------------------------------------------
+SKILLS
+----------------------------------------------------------------
+  Languages    :  HTML, CSS, JavaScript, Dart
+  Frameworks   :  Flutter (learning)
+  Tools        :  VS Code, Git, GitHub, Chrome DevTools
+  Design       :  Figma (basic), retro UI
+
+----------------------------------------------------------------
+PROJECTS
+----------------------------------------------------------------
+  MyCashier / CatchCash
+    Personal spending tracker in Flutter — categories,
+    monthly budgets, charts. Currently in active dev.
+
+  XP Portfolio
+    Windows XP desktop recreated in pure HTML/CSS/JS.
+    This website.
+
+  Movie Ranking, Birthday Invite
+    Small web experiments built while learning.
+
+----------------------------------------------------------------
+LEARNING
+----------------------------------------------------------------
+  - JavaScript fundamentals & DOM
+  - Responsive CSS layouts
+  - Flutter widgets & state management
+  - Git & version control basics
+
+================================================================</pre></div>
+      <div class="status-bar" style="display:flex">
+        <p class="status-bar-field">Ln 1, Col 1</p>
+        <p class="status-bar-field">100%</p>
+        <p class="status-bar-field">Windows (CRLF)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: CONTACT =========== -->
+  <div class="window" id="win-contact" data-title="Contact" data-icon="assets/xp/email.ico" style="width:480px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/email.ico" alt="">
+        Contact
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar"><span>File</span><span>Edit</span><span>Help</span></div>
+      <h2 class="win-h2">Get in touch</h2>
+      <p>The best way to reach me is by email. I usually reply within a day or two.</p>
+
+      <fieldset style="margin-top:8px">
+        <legend>Links</legend>
+        <div class="field-row"><label>Email</label><a href="mailto:gugaxosiauri@gmail.com">gugaxosiauri@gmail.com</a></div>
+        <div class="field-row"><label>GitHub</label><a href="https://github.com/GugaKhosiauri" target="_blank" rel="noreferrer">github.com/GugaKhosiauri</a></div>
+        <div class="field-row"><label>LinkedIn</label><a href="https://linkedin.com/in/guga-khosiauri" target="_blank" rel="noreferrer">linkedin.com/in/guga-khosiauri</a></div>
+      </fieldset>
+
+      <fieldset style="margin-top:10px">
+        <legend>Send a quick message</legend>
+        <form class="contact-form" id="contactForm">
+          <div class="field-row"><label for="cf-n">Name</label><input id="cf-n" required placeholder="Your name"></div>
+          <div class="field-row"><label for="cf-e">Email</label><input id="cf-e" type="email" required placeholder="you@email.com"></div>
+          <div class="field-row"><label for="cf-m">Message</label><textarea id="cf-m" rows="3" required placeholder="Say hi"></textarea></div>
+          <div class="form-actions">
+            <button type="submit">Send</button>
+            <button type="reset">Clear</button>
+          </div>
+        </form>
+      </fieldset>
+      <div class="status-bar"><p class="status-bar-field">Ready</p></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: SKILLS =========== -->
+  <div class="window" id="win-skills" data-title="Control Panel" data-icon="assets/xp/control-panel.ico" style="width:480px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/control-panel.ico" alt="">
+        Control Panel
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar"><span>File</span><span>View</span><span>Help</span></div>
+      <h2 class="win-h2">System Skills</h2>
+
+      <div class="skill-row"><span>HTML</span>
+        <div class="skillbar"><span style="width:85%"></span></div>
+        <em>85%</em>
+      </div>
+      <div class="skill-row"><span>CSS</span>
+        <div class="skillbar"><span style="width:75%"></span></div>
+        <em>75%</em>
+      </div>
+      <div class="skill-row"><span>JavaScript</span>
+        <div class="skillbar"><span style="width:55%"></span></div>
+        <em>55%</em>
+      </div>
+      <div class="skill-row"><span>Flutter / Dart</span>
+        <div class="skillbar"><span style="width:45%"></span></div>
+        <em>45%</em>
+      </div>
+      <div class="skill-row"><span>Git / GitHub</span>
+        <div class="skillbar"><span style="width:60%"></span></div>
+        <em>60%</em>
+      </div>
+      <div class="skill-row"><span>Figma</span>
+        <div class="skillbar"><span style="width:35%"></span></div>
+        <em>35%</em>
+      </div>
+
+      <div class="status-bar"><p class="status-bar-field">6 items</p></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: RECYCLE BIN =========== -->
+  <div class="window" id="win-recycle" data-title="Recycle Bin" data-icon="assets/xp/recycle-empty.ico" style="width:520px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/recycle-empty.ico" alt="">
+        Recycle Bin
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar"><span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span></div>
+      <div class="recycle-empty">
+        <img class="recycle-big" src="assets/xp/recycle-empty.ico" alt="">
+        <h2>Recycle Bin is empty</h2>
+        <p>Delete items and they'll show up here.</p>
+      </div>
+      <div class="status-bar"><p class="status-bar-field">0 objects</p></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: COMMAND PROMPT =========== -->
+  <div class="window" id="win-cmd" data-title="C:\WINDOWS\system32\cmd.exe" data-icon="i-cmd" style="width:640px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <svg class="tb-icon"><use href="#i-cmd"/></svg>
+        C:\WINDOWS\system32\cmd.exe
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="cmd-body" id="cmdBody">
+      <div class="cmd-out">Microsoft Windows XP [Version 5.1.2600]</div>
+      <div class="cmd-out">(C) Copyright 1985-2001 Microsoft Corp.</div>
+      <div class="cmd-out">&nbsp;</div>
+      <div class="cmd-out">Type <b>help</b> for a list of commands.</div>
+      <div class="cmd-out">&nbsp;</div>
+      <div id="cmdLog"></div>
+      <div class="cmd-line">
+        <span class="cmd-prompt">C:\Guga&gt;</span>
+        <input id="cmdInput" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: IMAGE VIEWER =========== -->
+  <div class="window" id="win-viewer" data-title="Windows Picture and Fax Viewer" data-icon="assets/xp/pictures.ico" style="width:640px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/pictures.ico" alt="">
+        Windows Picture and Fax Viewer
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body" style="margin:0; padding:0; border:none; display:flex; flex-direction:column">
+      <div class="viewer-body">
+        <img id="viewerImg" src="assets/bliss.jpg" alt="">
+      </div>
+      <div class="viewer-toolbar">
+        <button id="viewerPrev" title="Previous">◀</button>
+        <button id="viewerNext" title="Next">▶</button>
+        <span class="viewer-sep"></span>
+        <button id="viewerZoomIn" title="Zoom In">+</button>
+        <button id="viewerZoomOut" title="Zoom Out">-</button>
+        <span class="viewer-sep"></span>
+        <span id="viewerName">bliss.jpg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== CONTEXT MENU =========== -->
+  <div class="ctx-menu hidden" id="ctxMenu">
+    <button data-ctx="view">
+      <span class="ctx-label">View</span><span class="ctx-arrow">▶</span>
+    </button>
+    <button data-ctx="arrange">Arrange Icons By</button>
+    <button data-ctx="refresh">Refresh</button>
+    <div class="ctx-sep"></div>
+    <button data-ctx="new">New</button>
+    <div class="ctx-sep"></div>
+    <button data-ctx="viewer">Open Image Viewer</button>
+    <button data-ctx="cmd">Open Command Prompt</button>
+    <div class="ctx-sep"></div>
+    <button data-ctx="properties">Properties</button>
+  </div>
+
+</main>
+
+<!-- =========== TASKBAR =========== -->
+<footer class="taskbar hidden" id="taskbar">
+  <button class="start-btn" id="startBtn">
+    <img class="start-btn-image" src="assets/taskbar/start-button.webp" alt="start">
+  </button>
+  <div class="taskbar-items" id="taskbarItems"></div>
+  <div class="systray">
+    <span class="tray-icon" title="Toggle CRT Effect" id="crtToggleBtn"><img src="assets/taskbar/crt-off.webp" alt=""></span>
+    <span class="tray-icon" title="Toggle Fullscreen" id="fullscreenBtn"><img src="assets/taskbar/fullscreen.webp" alt=""></span>
+    <span class="clock" id="clock">00:00</span>
+  </div>
+</footer>
+
+<!-- =========== START MENU =========== -->
+<div class="xp-start hidden" id="startMenu">
+  <div class="xp-start-header">
+    <img src="assets/avatar.png" class="xp-user-pic" alt="Guga">
+    <div class="xp-user-name">Guga Khosiauri</div>
+  </div>
+
+  <div class="xp-start-body">
+    <div class="xp-col left">
+      <div class="xp-pinned">
+        <button class="xp-item big" data-open="win-projects">
+          <img class="xp-item-icon" src="assets/xp/internet-explorer.ico" alt="">
+          <div>
+            <div class="xp-item-title">Internet</div>
+            <div class="xp-item-sub">Internet Explorer</div>
+          </div>
+        </button>
+        <button class="xp-item big" data-open="win-contact">
+          <img class="xp-item-icon" src="assets/xp/email.ico" alt="">
+          <div>
+            <div class="xp-item-title">E-mail</div>
+            <div class="xp-item-sub">Address Book</div>
+          </div>
+        </button>
+      </div>
+      <div class="xp-divider"></div>
+      <div class="xp-recent">
+        <button class="xp-item" data-open="win-about"><img class="xp-item-icon" src="assets/desktop/about.webp" alt=""><span>About Me</span></button>
+        <button class="xp-item" data-open="win-documents"><img class="xp-item-icon" src="assets/xp/my-documents.ico" alt=""><span>My Documents</span></button>
+        <button class="xp-item" data-open="win-resume"><img class="xp-item-icon" src="assets/desktop/resume.webp" alt=""><span>Resume.txt</span></button>
+        <button class="xp-item" data-open="win-contact"><img class="xp-item-icon" src="assets/desktop/contact.webp" alt=""><span>Contact</span></button>
+        <button class="xp-item" data-open="win-cmd"><svg class="xp-item-icon"><use href="#i-cmd"/></svg><span>Command Prompt</span></button>
+        <button class="xp-item" data-open="win-viewer"><img class="xp-item-icon" src="assets/xp/pictures.ico" alt=""><span>Picture Viewer</span></button>
+        <button class="xp-item" data-open="win-recycle"><img class="xp-item-icon" src="assets/xp/recycle-empty.ico" alt=""><span>Recycle Bin</span></button>
+      </div>
+      <div class="xp-allprograms">
+        <span>All Programs</span><span class="arrow">▸</span>
+      </div>
+    </div>
+
+    <div class="xp-col right">
+      <button class="xp-link" data-open="win-mycomputer">
+        <img class="xp-link-icon" src="assets/xp/my-computer.ico" alt="">
+        <span>My Computer</span>
+      </button>
+      <button class="xp-link" data-open="win-documents">
+        <img class="xp-link-icon" src="assets/xp/my-documents.ico" alt="">
+        <span>My Documents</span>
+      </button>
+      <button class="xp-link" data-open="win-projects">
+        <img class="xp-link-icon" src="assets/desktop/projects.webp" alt="">
+        <span>My Projects</span>
+      </button>
+      <button class="xp-link" data-open="win-resume">
+        <img class="xp-link-icon" src="assets/desktop/resume.webp" alt="">
+        <span>Resume.txt</span>
+      </button>
+      <button class="xp-link" data-open="win-contact">
+        <img class="xp-link-icon" src="assets/desktop/contact.webp" alt="">
+        <span>Contact</span>
+      </button>
+      <div class="xp-divider"></div>
+      <button class="xp-link" data-open="win-cmd">
+        <svg class="xp-link-icon"><use href="#i-cmd"/></svg>
+        <span>Command Prompt</span>
+      </button>
+      <button class="xp-link" id="runBtn">
+        <img class="xp-link-icon" src="assets/xp/run.ico" alt="">
+        <span>Run...</span>
+      </button>
+      <div class="xp-divider"></div>
+      <button class="xp-link" id="helpBtn">
+        <img class="xp-link-icon" src="assets/xp/help.ico" alt="">
+        <span>Help and Support</span>
+      </button>
+      <button class="xp-link" id="searchBtn">
+        <img class="xp-link-icon" src="assets/xp/search.ico" alt="">
+        <span>Search</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="xp-start-footer">
+    <button class="xp-footer-btn xp-footer-btn-logoff" id="logOffBtn">
+      <span class="xp-footer-badge xp-footer-badge-logoff" aria-hidden="true"></span>
+      <span>Log Off</span>
+    </button>
+    <button class="xp-footer-btn xp-footer-btn-shutdown" id="shutDownBtn">
+      <span class="xp-footer-badge xp-footer-badge-power" aria-hidden="true"></span>
+      <span>Turn Off Computer</span>
+    </button>
+  </div>
+</div>
+
+<!-- =========== RUN DIALOG =========== -->
+<div class="run-dialog hidden" id="runDialog">
+  <div class="window" style="width:400px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/run.ico" alt="">
+        Run
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Close" id="runClose"></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="run-body">
+        <img class="run-icon" src="assets/xp/run.ico" alt="">
+        <p>Type the name of a program, folder, or document.</p>
+      </div>
+      <div class="field-row">
+        <label>Open:</label>
+        <input id="runInput" placeholder="cmd, iexplore, my documents, control...">
+      </div>
+      <div class="dialog-actions">
+        <button id="runOk">OK</button>
+        <button id="runCancel">Cancel</button>
+        <button>Browse...</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== LOG OFF WINDOWS =========== -->
+<div class="logoff-dialog hidden" id="logoffDialog">
+  <div class="logoff-dialog-card xp-power-card">
+    <div class="xp-power-titlebar">
+      <span class="xp-power-title">Log Off Windows</span>
+      <svg class="xp-power-flag" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-start-flag"/></svg>
+    </div>
+    <div class="xp-power-body">
+      <div class="logoff-dialog-actions">
+        <button class="logoff-choice" id="switchUserBtn">
+          <span class="power-choice-icon power-choice-icon-switch" aria-hidden="true"></span>
+          <span>Switch User</span>
+        </button>
+        <button class="logoff-choice" id="confirmLogOffBtn">
+          <span class="power-choice-icon power-choice-icon-logoff" aria-hidden="true"></span>
+          <span>Log Off</span>
+        </button>
+      </div>
+    </div>
+    <div class="xp-power-footer">
+      <button class="power-cancel" id="logoffCancelBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== TURN OFF COMPUTER =========== -->
+<div class="power-dialog hidden" id="powerDialog">
+  <div class="power-dialog-card xp-power-card">
+    <div class="xp-power-titlebar">
+      <span class="xp-power-title">Turn off computer</span>
+      <svg class="xp-power-flag" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-start-flag"/></svg>
+    </div>
+    <div class="xp-power-body">
+      <div class="power-dialog-actions">
+        <button class="power-choice power-choice-standby" id="standbyBtn">
+          <span class="power-choice-icon power-choice-icon-standby" aria-hidden="true"></span>
+          <span>Stand By</span>
+        </button>
+        <button class="power-choice power-choice-off" id="powerOffBtn">
+          <span class="power-choice-icon power-choice-icon-off" aria-hidden="true"></span>
+          <span>Turn Off</span>
+        </button>
+        <button class="power-choice power-choice-restart" id="powerRestartBtn">
+          <span class="power-choice-icon power-choice-icon-restart" aria-hidden="true"></span>
+          <span>Restart</span>
+        </button>
+      </div>
+    </div>
+    <div class="xp-power-footer">
+      <button class="power-cancel" id="powerCancelBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== SHUTDOWN / LOGOFF OVERLAY =========== -->
+<div class="shutdown-overlay hidden" id="shutdownOverlay">
+  <div class="shutdown-card">
+    <div class="shutdown-spinner"></div>
+    <div class="shutdown-text" id="shutdownText">Saving your settings...</div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
