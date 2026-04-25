@@ -62,11 +62,9 @@ async function renderPdfPageToCanvas(page, canvas, cssWidth){
 async function renderResumePdfPreview(){
   if (!isMobileLayout()) return;
   const viewer = document.querySelector("#win-resume .resume-mobile-viewer");
-  const pageCanvas = document.getElementById("resumePageCanvas");
-  const thumbCanvas = document.getElementById("resumeThumbCanvas");
   const pagePane = document.querySelector("#win-resume .resume-page-pane");
   const thumbPane = document.querySelector("#win-resume .resume-thumb-pane");
-  if (!viewer || !pageCanvas || !thumbCanvas || !pagePane || !thumbPane) return;
+  if (!viewer || !pagePane || !thumbPane) return;
   const token = ++resumeRenderToken;
   try {
     viewer.dataset.pdfStatus = "loading";
@@ -77,13 +75,49 @@ async function renderResumePdfPreview(){
     }
     resumePdfDoc = resumePdfDoc || await pdfjs.getDocument({ data: resumePdfBytes, disableWorker: true }).promise;
     if (token !== resumeRenderToken) return;
-    const page = await resumePdfDoc.getPage(1);
-    if (token !== resumeRenderToken) return;
-    const pageWidth = Math.max(260, pagePane.clientWidth - 24);
-    const thumbWidth = Math.max(80, Math.min(150, thumbPane.clientWidth * 0.62));
-    await renderPdfPageToCanvas(page, pageCanvas, pageWidth);
-    if (token !== resumeRenderToken) return;
-    await renderPdfPageToCanvas(page, thumbCanvas, thumbWidth);
+
+    const numPages = resumePdfDoc.numPages;
+    const zoom = parseFloat(viewer.dataset.zoom || "1");
+    const baseWidth = Math.max(260, pagePane.clientWidth - 24);
+    const pageWidth = baseWidth * zoom;
+    const thumbWidth = Math.max(80, Math.min(150, thumbPane.clientWidth - 24));
+
+    pagePane.innerHTML = "";
+    thumbPane.innerHTML = "";
+
+    for (let i = 1; i <= numPages; i++) {
+      const page = await resumePdfDoc.getPage(i);
+      if (token !== resumeRenderToken) return;
+
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.className = "resume-page-canvas";
+      pageCanvas.dataset.page = String(i);
+      pagePane.appendChild(pageCanvas);
+      await renderPdfPageToCanvas(page, pageCanvas, pageWidth);
+      if (token !== resumeRenderToken) return;
+
+      const thumbBtn = document.createElement("button");
+      thumbBtn.type = "button";
+      thumbBtn.className = "resume-thumb-item";
+      thumbBtn.dataset.page = String(i);
+      const thumbCanvas = document.createElement("canvas");
+      thumbCanvas.className = "resume-thumb-canvas";
+      const thumbLabel = document.createElement("span");
+      thumbLabel.textContent = String(i);
+      thumbBtn.appendChild(thumbCanvas);
+      thumbBtn.appendChild(thumbLabel);
+      thumbPane.appendChild(thumbBtn);
+      await renderPdfPageToCanvas(page, thumbCanvas, thumbWidth);
+      if (token !== resumeRenderToken) return;
+    }
+
+    const totalEl = viewer.querySelector(".resume-page-total");
+    if (totalEl) totalEl.textContent = String(numPages);
+    const zoomEl = viewer.querySelector(".resume-zoom");
+    if (zoomEl) zoomEl.textContent = `${Math.round(zoom * 100)}%`;
+    const firstThumb = thumbPane.querySelector('.resume-thumb-item[data-page="1"]');
+    firstThumb?.classList.add("active");
+
     viewer.dataset.pdfStatus = "rendered";
   } catch (err) {
     viewer.dataset.pdfStatus = "failed";
@@ -1200,23 +1234,20 @@ const allProgramsFlyout = $("#allProgramsFlyout");
 function positionAllProgramsFlyout(){
   if (!allProgramsFlyout || !allProgramsBtn) return;
   const startRect = startMenu.getBoundingClientRect();
-  if (isMobileLayout()){
-    const inset = 8;
-    const top = Math.max(8, startRect.top + 64);
-    const bottom = Math.max(40, window.innerHeight - startRect.bottom + 48);
-    allProgramsFlyout.style.left = `${startRect.left + inset}px`;
-    allProgramsFlyout.style.right = `${Math.max(inset, window.innerWidth - startRect.right + inset)}px`;
-    allProgramsFlyout.style.top = `${top}px`;
-    allProgramsFlyout.style.bottom = `${bottom}px`;
-    allProgramsFlyout.style.maxHeight = "none";
-  } else {
-    const btnRect = allProgramsBtn.getBoundingClientRect();
-    allProgramsFlyout.style.left = `${startRect.right - 4}px`;
-    allProgramsFlyout.style.right = "auto";
-    allProgramsFlyout.style.top = "auto";
-    allProgramsFlyout.style.bottom = `${window.innerHeight - btnRect.bottom}px`;
-    allProgramsFlyout.style.maxHeight = `${Math.min(window.innerHeight - 60, 480)}px`;
-  }
+  const btnRect = allProgramsBtn.getBoundingClientRect();
+  const topInset = 4;
+  const sideMargin = 6;
+  const flyoutMinWidth = 200;
+  const maxH = Math.max(200, btnRect.bottom - startRect.top - topInset);
+  let left = btnRect.right - 1;
+  const maxLeft = window.innerWidth - sideMargin - flyoutMinWidth;
+  if (left > maxLeft) left = Math.max(8, maxLeft);
+  allProgramsFlyout.style.left = `${left}px`;
+  allProgramsFlyout.style.right = "auto";
+  allProgramsFlyout.style.top = "auto";
+  allProgramsFlyout.style.width = "";
+  allProgramsFlyout.style.bottom = `${window.innerHeight - btnRect.bottom}px`;
+  allProgramsFlyout.style.maxHeight = `${maxH}px`;
 }
 function openAllPrograms(){
   if (!allProgramsFlyout) return;
@@ -1270,6 +1301,70 @@ window.addEventListener("resize", () => {
     window.resumeResizeTimer = window.setTimeout(renderResumePdfPreview, 120);
   }
 });
+
+/* ---------- RESUME MOBILE VIEWER CONTROLS ---------- */
+(function wireResumeViewer(){
+  const viewer = document.querySelector("#win-resume .resume-mobile-viewer");
+  if (!viewer) return;
+
+  viewer.addEventListener("click", (e) => {
+    const actionBtn = e.target.closest("[data-resume-action]");
+    if (actionBtn) {
+      const action = actionBtn.dataset.resumeAction;
+      if (action === "zoom-in" || action === "zoom-out") {
+        const cur = parseFloat(viewer.dataset.zoom || "1");
+        const step = action === "zoom-in" ? 0.25 : -0.25;
+        const next = Math.max(0.5, Math.min(3, +(cur + step).toFixed(2)));
+        if (next !== cur) {
+          viewer.dataset.zoom = String(next);
+          renderResumePdfPreview();
+        }
+        return;
+      }
+      if (action === "download") {
+        const a = document.createElement("a");
+        a.href = resumePdfUrl;
+        a.download = "Guga_Khosiauri_Resume.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        return;
+      }
+    }
+    const thumb = e.target.closest(".resume-thumb-item");
+    if (thumb) {
+      const page = thumb.dataset.page;
+      const target = viewer.querySelector(`.resume-page-canvas[data-page="${page}"]`);
+      const pane = viewer.querySelector(".resume-page-pane");
+      if (target && pane) pane.scrollTo({ top: target.offsetTop - 8, behavior: "smooth" });
+    }
+  });
+
+  const pagePane = viewer.querySelector(".resume-page-pane");
+  const thumbPane = viewer.querySelector(".resume-thumb-pane");
+  const pageBox = viewer.querySelector(".resume-page-box");
+  pagePane?.addEventListener("scroll", () => {
+    const canvases = pagePane.querySelectorAll(".resume-page-canvas");
+    if (!canvases.length) return;
+    const scrollTop = pagePane.scrollTop + 40;
+    let current = 1;
+    canvases.forEach(c => {
+      if (c.offsetTop <= scrollTop) current = +c.dataset.page;
+    });
+    if (pageBox) pageBox.textContent = String(current);
+    thumbPane?.querySelectorAll(".resume-thumb-item").forEach(t => {
+      t.classList.toggle("active", +t.dataset.page === current);
+    });
+    const activeThumb = thumbPane?.querySelector(".resume-thumb-item.active");
+    if (activeThumb && thumbPane) {
+      const top = activeThumb.offsetTop;
+      const bottom = top + activeThumb.offsetHeight;
+      if (top < thumbPane.scrollTop || bottom > thumbPane.scrollTop + thumbPane.clientHeight) {
+        thumbPane.scrollTo({ top: top - 12, behavior: "smooth" });
+      }
+    }
+  }, { passive: true });
+})();
 
 /* ---------- WINDOWS MEDIA PLAYER (unified audio + video) ---------- */
 const mediaPlaylists = {

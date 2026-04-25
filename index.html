@@ -659,26 +659,20 @@
       <div class="resume-mobile-viewer" aria-label="Resume PDF preview">
         <div class="resume-pdf-controls">
           <span class="resume-hamburger" aria-hidden="true">☰</span>
-          <span class="resume-file-label">(anony...</span>
+          <span class="resume-file-label">Resume.pdf</span>
           <span class="resume-page-box">1</span>
           <span>/</span>
-          <span>1</span>
+          <span class="resume-page-total">1</span>
           <span class="resume-separator"></span>
-          <span class="resume-zoom">50%</span>
-          <span class="resume-icon-btn" aria-hidden="true">+</span>
+          <button type="button" class="resume-icon-btn" data-resume-action="zoom-out" aria-label="Zoom out">−</button>
+          <span class="resume-zoom">100%</span>
+          <button type="button" class="resume-icon-btn" data-resume-action="zoom-in" aria-label="Zoom in">+</button>
           <span class="resume-separator"></span>
-          <span class="resume-icon-btn" aria-hidden="true">↻</span>
-          <span class="resume-icon-btn" aria-hidden="true">⇩</span>
-          <span class="resume-icon-btn" aria-hidden="true">⋮</span>
+          <button type="button" class="resume-icon-btn" data-resume-action="download" aria-label="Download">⇩</button>
         </div>
         <div class="resume-pdf-stage">
-          <aside class="resume-thumb-pane">
-            <canvas id="resumeThumbCanvas" class="resume-thumb-canvas"></canvas>
-            <span>1</span>
-          </aside>
-          <main class="resume-page-pane">
-            <canvas id="resumePageCanvas" class="resume-page-canvas"></canvas>
-          </main>
+          <aside class="resume-thumb-pane"></aside>
+          <main class="resume-page-pane"></main>
         </div>
       </div>
       <div class="notepad legacy-resume-text"><pre>================================================================
@@ -1159,7 +1153,7 @@ LEARNING
   </div>
 
   <!-- =========== WINDOW: MINESWEEPER =========== -->
-  <div class="window" id="win-minesweeper" data-title="Minesweeper" data-icon="i-picture" style="width:300px">
+  <div class="window" id="win-minesweeper" data-title="Minesweeper" data-icon="i-picture" style="width:268px">
     <div class="title-bar" data-drag>
       <div class="title-bar-text"><svg class="tb-icon"><use href="#i-picture"/></svg>Minesweeper</div>
       <div class="title-bar-controls">
