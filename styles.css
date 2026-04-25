@@ -760,6 +760,43 @@ video,
   border: 0;
   background: #777;
 }
+#win-resume.resume-mobile-fallback .window-body{
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 150px);
+  max-height: calc(100dvh - 150px);
+  overflow: hidden;
+  background: #ece9d8;
+}
+#win-resume.resume-mobile-fallback .resume-pdf{
+  display: none !important;
+}
+#win-resume.resume-mobile-fallback .legacy-resume-text{
+  display: block !important;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  border-top: 1px solid #aca899;
+  background: #fff;
+  color: #000;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#win-resume.resume-mobile-fallback .legacy-resume-text pre{
+  margin: 0;
+  padding: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 1.45;
+}
+#win-resume.resume-mobile-fallback .resume-toolbar{
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  flex-wrap: wrap;
+}
 
 /* =================================================
    CONTACT / SKILLS
@@ -3217,6 +3254,14 @@ html.is-mobile-layout .wmp-window.active{
 html.is-mobile-layout .wmp-window .window-body.wmp-body{
   max-height: calc(100dvh - 170px) !important;
   overflow-y: auto !important;
+}
+html.is-mobile-layout #win-resume .window-body{
+  display: flex !important;
+  flex-direction: column !important;
+  height: calc(100dvh - 150px) !important;
+  max-height: calc(100dvh - 150px) !important;
+  overflow: hidden !important;
+  background: #ece9d8 !important;
 }
 html.is-mobile-layout #win-resume .resume-pdf{
   display: none !important;

@@ -23,12 +23,16 @@ const debugOpenWindow = debugParams.get("open");
 const debugShowStart = debugParams.has("start");
 const debugShowPower = debugParams.has("power");
 const mobileMedia = window.matchMedia("(max-width: 768px)");
+const coarseMedia = window.matchMedia("(pointer: coarse)");
+const hoverNoneMedia = window.matchMedia("(hover: none)");
 
 function isMobileLayout(){
-  return mobileMedia.matches;
+  const likelyPhone = Math.min(window.innerWidth, window.innerHeight) <= 900;
+  return mobileMedia.matches || (likelyPhone && (coarseMedia.matches || hoverNoneMedia.matches || navigator.maxTouchPoints > 0));
 }
 function syncMobileClass(){
   document.documentElement.classList.toggle("is-mobile-layout", isMobileLayout());
+  document.getElementById("win-resume")?.classList.toggle("resume-mobile-fallback", isMobileLayout());
 }
 syncMobileClass();
 
@@ -160,6 +164,9 @@ function openWin(id){
     }
     addTaskbarItem(id);
     openWindows.add(id);
+  }
+  if (id === "win-resume") {
+    w.classList.toggle("resume-mobile-fallback", isMobileLayout());
   }
   fitWindowToMobile(w);
   w.classList.add("active");
@@ -352,6 +359,14 @@ mobileMedia.addEventListener?.("change", () => {
   syncMobileClass();
   if (!isMobileLayout()) return;
   $$(".window.active").forEach(fitWindowToMobile);
+});
+coarseMedia.addEventListener?.("change", syncMobileClass);
+hoverNoneMedia.addEventListener?.("change", syncMobileClass);
+window.addEventListener("orientationchange", () => {
+  setTimeout(() => {
+    syncMobileClass();
+    if (isMobileLayout()) $$(".window.active").forEach(fitWindowToMobile);
+  }, 120);
 });
 
 /* ---------- START MENU ---------- */
