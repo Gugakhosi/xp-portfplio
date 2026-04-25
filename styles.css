@@ -10,6 +10,7 @@ html, body{
   height:100%; margin:0;
   overflow:hidden;
   font-family: Tahoma, Arial, sans-serif;
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
   cursor: default;
@@ -22,6 +23,12 @@ body, body *:not(.title-bar):not(.title-bar *){
   font-family: Tahoma, Arial, sans-serif;
 }
 input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
+video,
+.desktop,
+.window,
+.ctx-menu{
+  -webkit-touch-callout: none;
+}
 
 .hidden{ display:none !important; }
 
@@ -3197,6 +3204,27 @@ body.crt-on{
     min-height: 40px;
     font-size: 13px;
   }
+}
+
+html.is-mobile-layout .wmp-window.active{
+  height: auto !important;
+  max-height: calc(100dvh - 122px) !important;
+}
+html.is-mobile-layout .wmp-window .window-body.wmp-body{
+  max-height: calc(100dvh - 170px) !important;
+  overflow-y: auto !important;
+}
+html.is-mobile-layout #win-resume .resume-pdf{
+  display: none !important;
+}
+html.is-mobile-layout #win-resume .legacy-resume-text{
+  display: block !important;
+  max-height: calc(100dvh - 210px) !important;
+  overflow: auto !important;
+}
+html.is-mobile-layout .xp-all-flyout{
+  max-height: min(34dvh, 280px) !important;
+  overflow-y: auto !important;
 }
 
 /* Respect users who prefer reduced motion. Keeps interactivity but kills the

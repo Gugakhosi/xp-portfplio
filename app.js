@@ -27,6 +27,10 @@ const mobileMedia = window.matchMedia("(max-width: 768px)");
 function isMobileLayout(){
   return mobileMedia.matches;
 }
+function syncMobileClass(){
+  document.documentElement.classList.toggle("is-mobile-layout", isMobileLayout());
+}
+syncMobileClass();
 
 function fitWindowToMobile(win){
   if (!win || !isMobileLayout()) return;
@@ -344,6 +348,7 @@ document.addEventListener("mousemove", (e) => {
 });
 document.addEventListener("mouseup", () => drag = null);
 mobileMedia.addEventListener?.("change", () => {
+  syncMobileClass();
   if (!isMobileLayout()) return;
   $$(".window.active").forEach(fitWindowToMobile);
 });
@@ -527,7 +532,8 @@ function closeCtxMenu(){ ctxMenu.classList.add("hidden"); }
 let touchCtxTimer = null;
 let touchCtxStart = null;
 desktop.addEventListener("touchstart", (e) => {
-  if (e.target.closest(".window")) return;
+  if (e.target.closest(".window") || e.target.closest(".icon")) return;
+  e.preventDefault();
   const touch = e.touches[0];
   if (!touch) return;
   touchCtxStart = { x: touch.clientX, y: touch.clientY };
@@ -536,7 +542,7 @@ desktop.addEventListener("touchstart", (e) => {
     openCtxMenuAt(touchCtxStart.x, touchCtxStart.y);
     if (navigator.vibrate) navigator.vibrate(18);
   }, 520);
-}, { passive: true });
+}, { passive: false });
 desktop.addEventListener("touchmove", (e) => {
   if (!touchCtxStart || !e.touches[0]) return;
   const dx = Math.abs(e.touches[0].clientX - touchCtxStart.x);
@@ -550,6 +556,11 @@ desktop.addEventListener("touchmove", (e) => {
     touchCtxStart = null;
   }, { passive: true });
 });
+document.addEventListener("contextmenu", (e) => {
+  if (e.target.closest("video, .wmp-window, .desktop, .ctx-menu")) {
+    e.preventDefault();
+  }
+}, { capture: true });
 const desktopWallpapers = [
   'url("assets/bliss.jpg")',
   'url("assets/gallery/xp-green-hills.svg")',
