@@ -723,6 +723,7 @@ video,
 .notepad pre{
   margin: 0;
   padding: 4px 6px;
+  background: #fff;
   font-family: "Lucida Console", "Courier New", monospace;
   font-size: 12px;
   line-height: 1.35;
@@ -758,7 +759,92 @@ video,
   height: min(72vh, 760px);
   min-height: 520px;
   border: 0;
-  background: #777;
+  background: #2b2b2b;
+}
+.resume-mobile-viewer{
+  display: none;
+  background: #242424;
+  color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+.resume-pdf-controls{
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  background: #333;
+  color: #f2f2f2;
+  font: 700 14px Arial, sans-serif;
+  white-space: nowrap;
+}
+.resume-hamburger,
+.resume-icon-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 28px;
+  font-size: 20px;
+}
+.resume-file-label{
+  max-width: 82px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.resume-page-box,
+.resume-zoom{
+  background: #171717;
+  color: #fff;
+  min-width: 34px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.resume-zoom{ min-width: 54px; }
+.resume-separator{
+  width: 1px;
+  height: 30px;
+  background: #666;
+}
+.resume-pdf-stage{
+  display: grid;
+  grid-template-columns: 34% 66%;
+  height: min(64vh, 680px);
+  min-height: 500px;
+  overflow: hidden;
+}
+.resume-thumb-pane{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 12px;
+  background: #252525;
+  border-right: 3px solid #111;
+  color: #fff;
+  font: 18px Arial, sans-serif;
+}
+.resume-thumb-canvas{
+  width: min(72%, 180px);
+  height: auto;
+  background: #fff;
+  box-shadow: 0 0 0 8px #bdd5ff;
+}
+.resume-page-pane{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 12px 28px;
+  background: #3a3a3a;
+}
+.resume-page-canvas{
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 0 0 2px #111;
 }
 #win-resume.resume-mobile-fallback .window-body{
   display: flex;
@@ -771,8 +857,18 @@ video,
 #win-resume.resume-mobile-fallback .resume-pdf{
   display: none !important;
 }
+#win-resume.resume-mobile-fallback .resume-mobile-viewer{
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+#win-resume.resume-mobile-fallback .resume-pdf-stage{
+  height: calc(100dvh - 261px);
+  min-height: 0;
+}
 #win-resume.resume-mobile-fallback .legacy-resume-text{
-  display: block !important;
+  display: none !important;
   flex: 1 1 auto;
   min-height: 0;
   max-height: none;
@@ -3266,8 +3362,18 @@ html.is-mobile-layout #win-resume .window-body{
 html.is-mobile-layout #win-resume .resume-pdf{
   display: none !important;
 }
-html.is-mobile-layout #win-resume .legacy-resume-text{
+html.is-mobile-layout #win-resume .resume-mobile-viewer{
   display: block !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+html.is-mobile-layout #win-resume .resume-pdf-stage{
+  height: calc(100dvh - 261px) !important;
+  min-height: 0 !important;
+}
+html.is-mobile-layout #win-resume .legacy-resume-text{
+  display: none !important;
   flex: 1 1 auto !important;
   min-height: 0 !important;
   max-height: none !important;

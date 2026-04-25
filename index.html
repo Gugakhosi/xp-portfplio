@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Guga Khosiauri — Windows XP</title>
   <link rel="stylesheet" href="https://unpkg.com/xp.css">
-  <link rel="stylesheet" href="styles.css?v=20260425-resume-touch-fallback" />
+  <link rel="stylesheet" href="styles.css?v=20260425-resume-visual-mobile" />
   <link rel="icon" href="assets/xp/my-computer.ico" />
 </head>
 <body>
@@ -656,6 +656,31 @@
         <a class="resume-action" href="assets/Guga_Khosiauri_Resume_Visual.pdf" download>Download</a>
       </div>
       <iframe class="resume-pdf" src="assets/Guga_Khosiauri_Resume_Visual.pdf#view=FitH" title="Guga Khosiauri Resume" loading="lazy"></iframe>
+      <div class="resume-mobile-viewer" aria-label="Resume PDF preview">
+        <div class="resume-pdf-controls">
+          <span class="resume-hamburger" aria-hidden="true">☰</span>
+          <span class="resume-file-label">(anony...</span>
+          <span class="resume-page-box">1</span>
+          <span>/</span>
+          <span>1</span>
+          <span class="resume-separator"></span>
+          <span class="resume-zoom">50%</span>
+          <span class="resume-icon-btn" aria-hidden="true">+</span>
+          <span class="resume-separator"></span>
+          <span class="resume-icon-btn" aria-hidden="true">↻</span>
+          <span class="resume-icon-btn" aria-hidden="true">⇩</span>
+          <span class="resume-icon-btn" aria-hidden="true">⋮</span>
+        </div>
+        <div class="resume-pdf-stage">
+          <aside class="resume-thumb-pane">
+            <canvas id="resumeThumbCanvas" class="resume-thumb-canvas"></canvas>
+            <span>1</span>
+          </aside>
+          <main class="resume-page-pane">
+            <canvas id="resumePageCanvas" class="resume-page-canvas"></canvas>
+          </main>
+        </div>
+      </div>
       <div class="notepad legacy-resume-text"><pre>================================================================
                 GUGA KHOSIAURI — RESUME
 ================================================================
@@ -1419,6 +1444,6 @@ LEARNING
   </div>
 </div>
 
-<script src="app.js?v=20260425-mobile-fix-2"></script>
+<script src="app.js?v=20260425-resume-visual-mobile"></script>
 </body>
 </html>

@@ -25,6 +25,11 @@ const debugShowPower = debugParams.has("power");
 const mobileMedia = window.matchMedia("(max-width: 768px)");
 const coarseMedia = window.matchMedia("(pointer: coarse)");
 const hoverNoneMedia = window.matchMedia("(hover: none)");
+const resumePdfUrl = "assets/Guga_Khosiauri_Resume_Visual.pdf";
+let resumePdfDoc = null;
+let resumePdfBytes = null;
+let resumePdfLibPromise = null;
+let resumeRenderToken = 0;
 
 function isMobileLayout(){
   const likelyPhone = Math.min(window.innerWidth, window.innerHeight) <= 900;
@@ -33,8 +38,58 @@ function isMobileLayout(){
 function syncMobileClass(){
   document.documentElement.classList.toggle("is-mobile-layout", isMobileLayout());
   document.getElementById("win-resume")?.classList.toggle("resume-mobile-fallback", isMobileLayout());
+  if (isMobileLayout() && document.getElementById("win-resume")?.classList.contains("active")) {
+    renderResumePdfPreview();
+  }
 }
 syncMobileClass();
+
+async function renderPdfPageToCanvas(page, canvas, cssWidth){
+  if (!page || !canvas || !cssWidth) return;
+  const baseViewport = page.getViewport({ scale: 1 });
+  const scale = cssWidth / baseViewport.width;
+  const viewport = page.getViewport({ scale });
+  const ratio = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+  canvas.style.width = `${Math.round(viewport.width)}px`;
+  canvas.style.height = `${Math.round(viewport.height)}px`;
+  canvas.width = Math.floor(viewport.width * ratio);
+  canvas.height = Math.floor(viewport.height * ratio);
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  await page.render({ canvasContext: ctx, viewport }).promise;
+}
+
+async function renderResumePdfPreview(){
+  if (!isMobileLayout()) return;
+  const viewer = document.querySelector("#win-resume .resume-mobile-viewer");
+  const pageCanvas = document.getElementById("resumePageCanvas");
+  const thumbCanvas = document.getElementById("resumeThumbCanvas");
+  const pagePane = document.querySelector("#win-resume .resume-page-pane");
+  const thumbPane = document.querySelector("#win-resume .resume-thumb-pane");
+  if (!viewer || !pageCanvas || !thumbCanvas || !pagePane || !thumbPane) return;
+  const token = ++resumeRenderToken;
+  try {
+    viewer.dataset.pdfStatus = "loading";
+    const pdfjs = window.pdfjsLib || await (resumePdfLibPromise ||= import("./assets/pdfjs/pdf.min.js"));
+    pdfjs.GlobalWorkerOptions.workerSrc = "./assets/pdfjs/pdf.worker.min.js";
+    if (!resumePdfBytes) {
+      resumePdfBytes = await fetch(resumePdfUrl, { cache: "no-store" }).then(r => r.arrayBuffer());
+    }
+    resumePdfDoc = resumePdfDoc || await pdfjs.getDocument({ data: resumePdfBytes, disableWorker: true }).promise;
+    if (token !== resumeRenderToken) return;
+    const page = await resumePdfDoc.getPage(1);
+    if (token !== resumeRenderToken) return;
+    const pageWidth = Math.max(260, pagePane.clientWidth - 24);
+    const thumbWidth = Math.max(80, Math.min(150, thumbPane.clientWidth * 0.62));
+    await renderPdfPageToCanvas(page, pageCanvas, pageWidth);
+    if (token !== resumeRenderToken) return;
+    await renderPdfPageToCanvas(page, thumbCanvas, thumbWidth);
+    viewer.dataset.pdfStatus = "rendered";
+  } catch (err) {
+    viewer.dataset.pdfStatus = "failed";
+    console.warn("Resume PDF preview failed", err);
+  }
+}
 
 function fitWindowToMobile(win){
   if (!win || !isMobileLayout()) return;
@@ -167,6 +222,7 @@ function openWin(id){
   }
   if (id === "win-resume") {
     w.classList.toggle("resume-mobile-fallback", isMobileLayout());
+    renderResumePdfPreview();
   }
   fitWindowToMobile(w);
   w.classList.add("active");
@@ -359,6 +415,7 @@ mobileMedia.addEventListener?.("change", () => {
   syncMobileClass();
   if (!isMobileLayout()) return;
   $$(".window.active").forEach(fitWindowToMobile);
+  renderResumePdfPreview();
 });
 coarseMedia.addEventListener?.("change", syncMobileClass);
 hoverNoneMedia.addEventListener?.("change", syncMobileClass);
@@ -366,6 +423,7 @@ window.addEventListener("orientationchange", () => {
   setTimeout(() => {
     syncMobileClass();
     if (isMobileLayout()) $$(".window.active").forEach(fitWindowToMobile);
+    renderResumePdfPreview();
   }, 120);
 });
 
@@ -1207,6 +1265,10 @@ document.addEventListener("click", (e) => {
 });
 window.addEventListener("resize", () => {
   if (allProgramsFlyout && !allProgramsFlyout.classList.contains("hidden")) positionAllProgramsFlyout();
+  if (document.getElementById("win-resume")?.classList.contains("active")) {
+    window.clearTimeout(window.resumeResizeTimer);
+    window.resumeResizeTimer = window.setTimeout(renderResumePdfPreview, 120);
+  }
 });
 
 /* ---------- WINDOWS MEDIA PLAYER (unified audio + video) ---------- */
