@@ -166,6 +166,7 @@ function openWin(id){
   w.style.display = "block";
   focusWin(id);
   closeStartMenu();
+  closeAllPrograms();
   closeCtxMenu();
 }
 
@@ -359,6 +360,7 @@ function toggleStartMenu(){
   startMenu.classList.contains("hidden") ? openStartMenu() : closeStartMenu();
 }
 function openStartMenu(){
+  closeCtxMenu();
   startMenu.classList.remove("hidden");
   startBtn.classList.add("active");
   playSound("click");
@@ -366,6 +368,7 @@ function openStartMenu(){
 function closeStartMenu(){
   startMenu.classList.add("hidden");
   startBtn.classList.remove("active");
+  closeAllPrograms();
 }
 function openLogoffDialog(){
   closePowerDialog();
@@ -513,6 +516,8 @@ tick(); setInterval(tick, 1000);
 
 /* ---------- CONTEXT MENU ---------- */
 const ctxMenu = $("#ctxMenu");
+let suppressNativeContextMenuUntil = 0;
+let suppressNextContextClick = false;
 function openCtxMenuAt(x, y){
   const menuWidth = Math.min(220, window.innerWidth - 8);
   const menuHeight = 285;
@@ -525,36 +530,58 @@ function openCtxMenuAt(x, y){
 desktop.addEventListener("contextmenu", (e) => {
   if (e.target.closest(".window")) return;
   e.preventDefault();
+  if (Date.now() < suppressNativeContextMenuUntil) return;
   openCtxMenuAt(e.clientX, e.clientY);
 });
-document.addEventListener("click", closeCtxMenu);
+document.addEventListener("pointerdown", (e) => {
+  if (ctxMenu.classList.contains("hidden")) return;
+  if (ctxMenu.contains(e.target)) return;
+  closeCtxMenu();
+}, { capture: true });
+document.addEventListener("click", (e) => {
+  if (suppressNextContextClick) {
+    suppressNextContextClick = false;
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+  if (ctxMenu.classList.contains("hidden")) return;
+  if (ctxMenu.contains(e.target)) return;
+  closeCtxMenu();
+}, { capture: true });
 function closeCtxMenu(){ ctxMenu.classList.add("hidden"); }
-let touchCtxTimer = null;
-let touchCtxStart = null;
-desktop.addEventListener("touchstart", (e) => {
-  if (e.target.closest(".window") || e.target.closest(".icon")) return;
-  e.preventDefault();
-  const touch = e.touches[0];
-  if (!touch) return;
-  touchCtxStart = { x: touch.clientX, y: touch.clientY };
-  clearTimeout(touchCtxTimer);
-  touchCtxTimer = setTimeout(() => {
-    openCtxMenuAt(touchCtxStart.x, touchCtxStart.y);
+let ctxPressTimer = null;
+let ctxPressStart = null;
+function clearCtxPress(){
+  clearTimeout(ctxPressTimer);
+  ctxPressTimer = null;
+  ctxPressStart = null;
+}
+desktop.addEventListener("pointerdown", (e) => {
+  if (!isMobileLayout() || e.pointerType === "mouse") return;
+  if (e.target !== desktop) return;
+  clearCtxPress();
+  ctxPressStart = { x: e.clientX, y: e.clientY, pointerId: e.pointerId };
+  ctxPressTimer = setTimeout(() => {
+    if (!ctxPressStart || activeSelection?.moved) return;
+    if (activeSelection) {
+      activeSelection.box.remove();
+      activeSelection = null;
+    }
+    suppressNativeContextMenuUntil = Date.now() + 900;
+    suppressNextContextClick = true;
+    openCtxMenuAt(ctxPressStart.x, ctxPressStart.y);
     if (navigator.vibrate) navigator.vibrate(18);
-  }, 520);
-}, { passive: false });
-desktop.addEventListener("touchmove", (e) => {
-  if (!touchCtxStart || !e.touches[0]) return;
-  const dx = Math.abs(e.touches[0].clientX - touchCtxStart.x);
-  const dy = Math.abs(e.touches[0].clientY - touchCtxStart.y);
-  if (dx > 10 || dy > 10) clearTimeout(touchCtxTimer);
+  }, 560);
 }, { passive: true });
-["touchend", "touchcancel"].forEach(type => {
-  desktop.addEventListener(type, () => {
-    clearTimeout(touchCtxTimer);
-    touchCtxTimer = null;
-    touchCtxStart = null;
-  }, { passive: true });
+desktop.addEventListener("pointermove", (e) => {
+  if (!ctxPressStart || e.pointerId !== ctxPressStart.pointerId) return;
+  const dx = Math.abs(e.clientX - ctxPressStart.x);
+  const dy = Math.abs(e.clientY - ctxPressStart.y);
+  if (dx > 10 || dy > 10) clearCtxPress();
+}, { passive: true });
+["pointerup", "pointercancel", "pointerleave"].forEach(type => {
+  desktop.addEventListener(type, clearCtxPress, { passive: true });
 });
 document.addEventListener("contextmenu", (e) => {
   if (e.target.closest("video, .wmp-window, .desktop, .ctx-menu")) {
@@ -961,29 +988,86 @@ function topVisibleWindow(){
 }
 
 /* ---------- DESKTOP SELECTION BOX ---------- */
-let selBox = null, selStart = null;
-desktop.addEventListener("mousedown", (e) => {
-  if (e.target !== desktop) return;
-  if (isMobileLayout()) return;
-  selStart = { x: e.clientX, y: e.clientY };
-  selBox = document.createElement("div");
-  selBox.className = "select-box";
-  desktop.appendChild(selBox);
-});
-document.addEventListener("mousemove", (e) => {
-  if (!selBox || !selStart) return;
-  const x = Math.min(selStart.x, e.clientX);
-  const y = Math.min(selStart.y, e.clientY);
-  const w = Math.abs(e.clientX - selStart.x);
-  const h = Math.abs(e.clientY - selStart.y);
-  selBox.style.left = `${x}px`;
-  selBox.style.top  = `${y}px`;
-  selBox.style.width  = `${w}px`;
-  selBox.style.height = `${h}px`;
-});
-document.addEventListener("mouseup", () => {
-  if (selBox) selBox.remove();
-  selBox = null; selStart = null;
+let activeSelection = null;
+let suppressNextSelectionClick = false;
+
+function rectsIntersect(a, b){
+  return a.left <= b.right && a.right >= b.left && a.top <= b.bottom && a.bottom >= b.top;
+}
+
+function beginSelection(e, container, itemSelector, groupSelector){
+  if (e.button !== undefined && e.button !== 0) return;
+  if (e.target !== container) return;
+  closeCtxMenu();
+  closeAllPrograms();
+
+  const box = document.createElement("div");
+  box.className = "select-box";
+  container.appendChild(box);
+
+  activeSelection = {
+    container,
+    itemSelector,
+    groupSelector,
+    box,
+    pointerId: e.pointerId,
+    startX: e.clientX,
+    startY: e.clientY,
+    moved: false,
+  };
+  container.setPointerCapture?.(e.pointerId);
+  e.preventDefault();
+}
+
+function updateSelection(e){
+  if (!activeSelection || e.pointerId !== activeSelection.pointerId) return;
+  const s = activeSelection;
+  const dx = Math.abs(e.clientX - s.startX);
+  const dy = Math.abs(e.clientY - s.startY);
+  if (dx > 4 || dy > 4) {
+    s.moved = true;
+    clearCtxPress();
+  }
+
+  const viewportRect = {
+    left: Math.min(s.startX, e.clientX),
+    top: Math.min(s.startY, e.clientY),
+    right: Math.max(s.startX, e.clientX),
+    bottom: Math.max(s.startY, e.clientY),
+  };
+  const containerRect = s.container.getBoundingClientRect();
+  s.box.style.left = `${viewportRect.left - containerRect.left + s.container.scrollLeft}px`;
+  s.box.style.top = `${viewportRect.top - containerRect.top + s.container.scrollTop}px`;
+  s.box.style.width = `${viewportRect.right - viewportRect.left}px`;
+  s.box.style.height = `${viewportRect.bottom - viewportRect.top}px`;
+
+  $$(s.groupSelector).forEach(item => {
+    item.classList.toggle("selected", rectsIntersect(viewportRect, item.getBoundingClientRect()));
+  });
+}
+
+function finishSelection(e){
+  if (!activeSelection || e.pointerId !== activeSelection.pointerId) return;
+  const s = activeSelection;
+  s.container.releasePointerCapture?.(e.pointerId);
+  if (s.moved) suppressNextSelectionClick = true;
+  s.box.remove();
+  activeSelection = null;
+}
+
+desktop.addEventListener("pointerdown", (e) => beginSelection(e, desktop, ".icon", ".icon"));
+document.addEventListener("pointermove", updateSelection);
+document.addEventListener("pointerup", finishSelection);
+document.addEventListener("pointercancel", finishSelection);
+document.addEventListener("click", (e) => {
+  if (!suppressNextSelectionClick) return;
+  suppressNextSelectionClick = false;
+  e.preventDefault();
+  e.stopPropagation();
+}, { capture: true });
+
+$$(".file-grid").forEach(grid => {
+  grid.addEventListener("pointerdown", (e) => beginSelection(e, grid, ".file-item", ".file-item"));
 });
 
 /* ---------- CRT EFFECT TOGGLE ---------- */
@@ -1044,11 +1128,14 @@ function positionAllProgramsFlyout(){
   if (!allProgramsFlyout || !allProgramsBtn) return;
   const startRect = startMenu.getBoundingClientRect();
   if (isMobileLayout()){
-    allProgramsFlyout.style.left = "4px";
-    allProgramsFlyout.style.right = "4px";
-    allProgramsFlyout.style.bottom = `${window.innerHeight - startRect.top + 4}px`;
-    allProgramsFlyout.style.top = "auto";
-    allProgramsFlyout.style.maxHeight = "50vh";
+    const inset = 8;
+    const top = Math.max(8, startRect.top + 64);
+    const bottom = Math.max(40, window.innerHeight - startRect.bottom + 48);
+    allProgramsFlyout.style.left = `${startRect.left + inset}px`;
+    allProgramsFlyout.style.right = `${Math.max(inset, window.innerWidth - startRect.right + inset)}px`;
+    allProgramsFlyout.style.top = `${top}px`;
+    allProgramsFlyout.style.bottom = `${bottom}px`;
+    allProgramsFlyout.style.maxHeight = "none";
   } else {
     const btnRect = allProgramsBtn.getBoundingClientRect();
     allProgramsFlyout.style.left = `${startRect.right - 4}px`;
