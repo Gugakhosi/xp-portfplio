@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Guga Khosiauri — Windows XP</title>
   <link rel="stylesheet" href="https://unpkg.com/xp.css">
-  <link rel="stylesheet" href="styles.css?v=20260424-mobile-fixes-2" />
+  <link rel="stylesheet" href="styles.css?v=20260425-visual-audit" />
   <link rel="icon" href="assets/xp/my-computer.ico" />
 </head>
 <body>
@@ -561,43 +561,17 @@
         </div>
         <div class="projects-grid">
 
-          <a class="project-card" href="./catchcash/" target="_blank" rel="noreferrer">
-            <div class="project-thumb" style="background:linear-gradient(135deg,#2b8cff,#0e4bb3);color:#fff">CC</div>
+          <button class="project-card" data-open="win-project-catchcash">
+            <div class="project-thumb"><img src="assets/catchcash/icon.svg" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>
             <div class="project-info">
-              <div class="project-title">MyCashier (CatchCash)</div>
-              <div class="project-desc">Flutter-based personal spending tracker — categories, budgets, monthly stats.</div>
-              <div class="project-tags"><span>Flutter</span><span>Dart</span><span>Mobile</span></div>
+              <div class="project-title">CachCash</div>
+              <div class="project-desc">Flutter-based personal spending tracker — categories, budgets, monthly stats. Click to see screenshots and download the APK.</div>
+              <div class="project-tags"><span>Flutter</span><span>Dart</span><span>Android</span><span>Active Dev</span></div>
             </div>
-          </a>
-
-          <a class="project-card" data-project="movie">
-            <div class="project-thumb" style="background:linear-gradient(135deg,#9b59b6,#5b2780);color:#fff">MR</div>
-            <div class="project-info">
-              <div class="project-title">Movie Ranking</div>
-              <div class="project-desc">A small HTML/JS project for ranking favourite movies.</div>
-              <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-            </div>
-          </a>
-
-          <a class="project-card" data-project="invite">
-            <div class="project-thumb" style="background:linear-gradient(135deg,#ff7f7f,#c63d3d);color:#fff">BI</div>
-            <div class="project-info">
-              <div class="project-title">Birthday Invite</div>
-              <div class="project-desc">Animated invite card built while learning CSS transitions.</div>
-              <div class="project-tags"><span>HTML</span><span>CSS</span></div>
-            </div>
-          </a>
-
-          <a class="project-card" data-project="xp">
-            <div class="project-thumb" style="background:linear-gradient(135deg,#3cb54a,#168b2c);color:#fff">XP</div>
-            <div class="project-info">
-              <div class="project-title">XP Portfolio (this site)</div>
-              <div class="project-desc">Windows XP desktop recreated in HTML/CSS/JS. You're inside it.</div>
-              <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-            </div>
-          </a>
+          </button>
 
         </div>
+        <p class="ie-note">More projects are in the works — check back soon.</p>
       </div>
       <div class="status-bar">
         <p class="status-bar-field" id="ieStatus">Done</p>
@@ -681,7 +655,7 @@
         <a class="resume-action" href="assets/Guga_Khosiauri_Resume_Visual.pdf" target="_blank" rel="noreferrer">Open PDF</a>
         <a class="resume-action" href="assets/Guga_Khosiauri_Resume_Visual.pdf" download>Download</a>
       </div>
-      <iframe class="resume-pdf" src="assets/Guga_Khosiauri_Resume_Visual.pdf#view=FitH" title="Guga Khosiauri Resume"></iframe>
+      <iframe class="resume-pdf" src="assets/Guga_Khosiauri_Resume_Visual.pdf#view=FitH" title="Guga Khosiauri Resume" loading="lazy"></iframe>
       <div class="notepad legacy-resume-text"><pre>================================================================
                 GUGA KHOSIAURI — RESUME
 ================================================================
@@ -710,7 +684,7 @@ SKILLS
 ----------------------------------------------------------------
 PROJECTS
 ----------------------------------------------------------------
-  MyCashier / CatchCash
+  CachCash
     Personal spending tracker in Flutter — categories,
     monthly budgets, charts. Currently in active dev.
 
@@ -905,6 +879,302 @@ LEARNING
     </div>
   </div>
 
+  <!-- =========== WINDOW: MEDIA PLAYER (MUSIC + VIDEO MODES) =========== -->
+  <div class="window wmp-window" id="win-media" data-title="Media Player" data-icon="assets/xp/music.ico" style="width:760px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/xp/music.ico" alt="">
+        <span id="mediaWindowTitle">Media Player</span>
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body wmp-body">
+      <div class="menubar"><span>File</span><span>View</span><span>Play</span><span>Tools</span><span>Help</span></div>
+      <div class="wmp-tabs" role="tablist" aria-label="Player mode">
+        <button class="wmp-tab active" data-mode="audio" role="tab" aria-selected="true">Music</button>
+        <button class="wmp-tab"        data-mode="video" role="tab" aria-selected="false">Video</button>
+      </div>
+      <div class="wmp-main">
+        <div class="wmp-stage-wrap">
+          <div class="wmp-visual" id="wmpVisual">
+            <div class="wmp-art" id="wmpArt">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="46" fill="#0b2f55"/>
+                <circle cx="50" cy="50" r="30" fill="#1b4a94"/>
+                <circle cx="50" cy="50" r="6"  fill="#0b2f55"/>
+                <circle cx="50" cy="50" r="2"  fill="#fff"/>
+              </svg>
+            </div>
+            <div class="wmp-meta">
+              <div class="wmp-title" id="wmpTitle">Nothing playing</div>
+              <div class="wmp-sub"   id="wmpSub">Select a track from the playlist</div>
+            </div>
+          </div>
+          <div class="wmv-stage hidden" id="wmvStage">
+            <video id="wmvVideo" playsinline preload="metadata" controlsList="nodownload"></video>
+            <div class="wmv-empty" id="wmvEmpty">Select a video from the playlist below</div>
+          </div>
+          <audio id="wmpAudioEl" preload="metadata"></audio>
+          <div class="wmp-progress">
+            <span class="wmp-time" id="wmpCurrent">0:00</span>
+            <input id="wmpSeek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
+            <span class="wmp-time" id="wmpDuration">0:00</span>
+          </div>
+          <div class="wmp-controls">
+            <button id="wmpPrev" title="Previous">&#9194;</button>
+            <button id="wmpPlay" title="Play" class="wmp-play">&#9654;</button>
+            <button id="wmpNext" title="Next">&#9193;</button>
+            <span class="wmp-sep"></span>
+            <button id="wmpMute" title="Mute">&#128266;</button>
+            <input id="wmpVol" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume">
+            <span class="wmp-sep"></span>
+            <button id="wmpFs" title="Fullscreen" class="wmp-fs-btn">&#9974;</button>
+          </div>
+        </div>
+        <div class="wmp-list" id="wmpList" role="listbox"></div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="wmpStatus">Ready</p>
+        <p class="status-bar-field" id="wmpMode">Music</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: CATCHCASH PROJECT DETAIL =========== -->
+  <div class="window" id="win-project-catchcash" data-title="CachCash" data-icon="assets/catchcash/icon.svg" style="width:720px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text">
+        <img class="tb-icon" src="assets/catchcash/icon.svg" alt="">
+        CachCash - Project Details
+      </div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <div class="menubar"><span>File</span><span>View</span><span>Help</span></div>
+      <div class="cc-detail">
+        <header class="cc-head">
+          <img class="cc-icon" src="assets/catchcash/icon.svg" alt="">
+          <div class="cc-head-text">
+            <h1>CachCash</h1>
+            <p class="cc-sub">Flutter · Android · Personal Finance</p>
+            <div class="cc-tag-row">
+              <span class="cc-tag">Flutter</span>
+              <span class="cc-tag">Dart</span>
+              <span class="cc-tag">Mobile</span>
+              <span class="cc-tag">SQLite</span>
+              <span class="cc-tag">Active Dev</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="cc-section">
+          <h2>About this project</h2>
+          <p>
+            <strong>CachCash</strong> is my personal spending tracker built with Flutter.
+            It's designed to make everyday money management painless: log every expense in seconds, group
+            it by category, and watch monthly budgets to stay in control.
+          </p>
+          <p>
+            The app runs fully offline with a local SQLite database, so your data stays on your phone.
+            I'm actively adding features — charts, recurring bills, and export to CSV are on the roadmap.
+          </p>
+        </section>
+
+        <section class="cc-section">
+          <h2>Key features</h2>
+          <ul class="cc-features">
+            <li><b>Quick add</b> — log an expense in under 3 taps</li>
+            <li><b>Categories</b> — food, transport, bills, leisure, and custom ones</li>
+            <li><b>Monthly budgets</b> — set a cap, get warned before you go over</li>
+            <li><b>Stats</b> — weekly trend chart + category breakdown</li>
+            <li><b>Offline-first</b> — no account, no internet needed</li>
+            <li><b>Clean UI</b> — designed to feel fast and native</li>
+          </ul>
+        </section>
+
+        <section class="cc-section">
+          <h2>Screenshots</h2>
+          <div class="cc-shots">
+            <button class="cc-shot" data-shot="assets/catchcash/screen-1.svg" data-caption="Home — balance, income vs. spent, recent transactions">
+              <img src="assets/catchcash/screen-1.svg" alt="CatchCash home screen">
+              <span>Home</span>
+            </button>
+            <button class="cc-shot" data-shot="assets/catchcash/screen-2.svg" data-caption="Stats — spending trend and category breakdown">
+              <img src="assets/catchcash/screen-2.svg" alt="CatchCash stats screen">
+              <span>Stats</span>
+            </button>
+            <button class="cc-shot" data-shot="assets/catchcash/screen-3.svg" data-caption="Budgets — track caps per category">
+              <img src="assets/catchcash/screen-3.svg" alt="CatchCash budgets screen">
+              <span>Budgets</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="cc-section cc-download">
+          <h2>Download</h2>
+          <p>Grab the latest Android build and install it on your phone. Requires Android 7.0+.</p>
+          <div class="cc-actions">
+            <a id="ccApkBtn" class="cc-btn cc-btn-primary" href="assets/catchcash/catchcash.apk" download>
+              <span class="cc-btn-ico">⬇</span>
+              Download APK
+            </a>
+            <a class="cc-btn" href="../catchcash/" target="_blank" rel="noreferrer">
+              <span class="cc-btn-ico">▶</span>
+              Open Web Preview
+            </a>
+          </div>
+          <p class="cc-note" id="ccApkNote">Latest build: v0.4 · Android 7.0+ · ~12 MB</p>
+        </section>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">Ready</p>
+        <p class="status-bar-field">CachCash project</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== SCREENSHOT LIGHTBOX =========== -->
+  <div class="cc-lightbox hidden" id="ccLightbox">
+    <button class="cc-lb-close" id="ccLbClose" aria-label="Close">✕</button>
+    <img id="ccLbImg" alt="">
+    <div class="cc-lb-caption" id="ccLbCaption"></div>
+  </div>
+
+  <!-- =========== WINDOW: NOTEPAD =========== -->
+  <div class="window" id="win-notepad" data-title="Untitled - Notepad" data-icon="assets/xp/notepad.ico" style="width:560px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text"><img class="tb-icon" src="assets/xp/notepad.ico" alt="">Untitled - Notepad</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body app-body notepad-app">
+      <div class="menubar"><span>File</span><span>Edit</span><span>Format</span><span>View</span><span>Help</span></div>
+      <textarea id="notepadText" spellcheck="false">Welcome to Notepad.</textarea>
+      <div class="status-bar"><p class="status-bar-field" id="notepadStatus">Ready</p></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: PAINT =========== -->
+  <div class="window" id="win-paint" data-title="untitled - Paint" data-icon="i-paint" style="width:680px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text"><svg class="tb-icon"><use href="#i-paint"/></svg>untitled - Paint</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body app-body paint-app">
+      <div class="menubar"><span>File</span><span>Edit</span><span>View</span><span>Image</span><span>Colors</span><span>Help</span></div>
+      <div class="paint-toolbar">
+        <button type="button" id="paintClear">Clear</button>
+        <label>Size <input id="paintSize" type="range" min="2" max="28" value="6"></label>
+        <div class="paint-colors" id="paintColors">
+          <button type="button" data-color="#000000" style="background:#000000" aria-label="Black"></button>
+          <button type="button" data-color="#ff0000" style="background:#ff0000" aria-label="Red"></button>
+          <button type="button" data-color="#0066ff" style="background:#0066ff" aria-label="Blue"></button>
+          <button type="button" data-color="#18a118" style="background:#18a118" aria-label="Green"></button>
+          <button type="button" data-color="#ffd400" style="background:#ffd400" aria-label="Yellow"></button>
+          <button type="button" data-color="#ffffff" style="background:#ffffff" aria-label="Eraser"></button>
+        </div>
+      </div>
+      <div class="paint-canvas-wrap"><canvas id="paintCanvas" width="900" height="520"></canvas></div>
+      <div class="status-bar"><p class="status-bar-field">Draw with mouse or touch</p></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: CALCULATOR =========== -->
+  <div class="window" id="win-calculator" data-title="Calculator" data-icon="i-settings" style="width:260px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text"><svg class="tb-icon"><use href="#i-settings"/></svg>Calculator</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body app-body calc-app">
+      <div class="menubar"><span>View</span><span>Edit</span><span>Help</span></div>
+      <input id="calcDisplay" value="0" readonly aria-label="Calculator display">
+      <div class="calc-grid" id="calcGrid">
+        <button data-calc="C">C</button><button data-calc="back">Back</button><button data-calc="/">/</button><button data-calc="*">*</button>
+        <button data-calc="7">7</button><button data-calc="8">8</button><button data-calc="9">9</button><button data-calc="-">-</button>
+        <button data-calc="4">4</button><button data-calc="5">5</button><button data-calc="6">6</button><button data-calc="+">+</button>
+        <button data-calc="1">1</button><button data-calc="2">2</button><button data-calc="3">3</button><button data-calc="=" class="calc-equals">=</button>
+        <button data-calc="0" class="calc-zero">0</button><button data-calc=".">.</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: SOLITAIRE =========== -->
+  <div class="window" id="win-solitaire" data-title="Solitaire" data-icon="i-picture" style="width:620px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text"><svg class="tb-icon"><use href="#i-picture"/></svg>Solitaire</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Maximize" data-maximize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body app-body solitaire-app">
+      <div class="menubar"><span>Game</span><span>Help</span></div>
+      <div class="game-toolbar"><button id="solDeal">New Deal</button><span id="solStatus">Deal cards and match the old Windows vibe.</span></div>
+      <div class="solitaire-table" id="solitaireTable"></div>
+    </div>
+  </div>
+
+  <!-- =========== WINDOW: MINESWEEPER =========== -->
+  <div class="window" id="win-minesweeper" data-title="Minesweeper" data-icon="i-picture" style="width:300px">
+    <div class="title-bar" data-drag>
+      <div class="title-bar-text"><svg class="tb-icon"><use href="#i-picture"/></svg>Minesweeper</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" data-minimize></button>
+        <button aria-label="Close" data-close></button>
+      </div>
+    </div>
+    <div class="window-body app-body mines-app">
+      <div class="mine-top"><span id="mineCount">010</span><button id="mineReset">:)</button><span id="mineTimer">000</span></div>
+      <div class="mine-grid" id="mineGrid" aria-label="Minesweeper board"></div>
+    </div>
+  </div>
+
+  <!-- =========== COMING SOON DIALOG =========== -->
+  <div class="comingsoon-dialog hidden" id="comingSoonDialog">
+    <div class="window" style="width:380px">
+      <div class="title-bar" data-drag>
+        <div class="title-bar-text">
+          <img class="tb-icon" src="assets/xp/help.ico" alt="">
+          <span id="csTitleText">Coming soon</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" id="csClose"></button>
+        </div>
+      </div>
+      <div class="window-body has-space">
+        <div class="cs-body">
+          <img class="cs-icon" src="assets/xp/help.ico" alt="">
+          <div>
+            <p><strong id="csHeading">Coming soon</strong></p>
+            <p id="csMessage">This feature isn't available yet. Check back in a future update.</p>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button id="csOk">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- =========== CONTEXT MENU =========== -->
   <div class="ctx-menu hidden" id="ctxMenu">
     <button data-ctx="view">
@@ -961,21 +1231,21 @@ LEARNING
           <img class="xp-item-icon" src="assets/xp/email.ico" alt="">
           <div>
             <div class="xp-item-title">E-mail</div>
-            <div class="xp-item-sub">Address Book</div>
+            <div class="xp-item-sub">Contact Guga</div>
           </div>
         </button>
       </div>
       <div class="xp-divider"></div>
       <div class="xp-recent">
         <button class="xp-item" data-open="win-about"><img class="xp-item-icon" src="assets/desktop/about.webp" alt=""><span>About Me</span></button>
-        <button class="xp-item" data-open="win-documents"><img class="xp-item-icon" src="assets/xp/my-documents.ico" alt=""><span>My Documents</span></button>
-        <button class="xp-item" data-open="win-resume"><img class="xp-item-icon" src="assets/desktop/resume.webp" alt=""><span>Resume.pdf</span></button>
-        <button class="xp-item" data-open="win-contact"><img class="xp-item-icon" src="assets/desktop/contact.webp" alt=""><span>Contact</span></button>
-        <button class="xp-item" data-open="win-cmd"><svg class="xp-item-icon"><use href="#i-cmd"/></svg><span>Command Prompt</span></button>
+        <button class="xp-item" data-open="win-projects"><img class="xp-item-icon" src="assets/desktop/projects.webp" alt=""><span>My Projects</span></button>
+        <button class="xp-item" data-open="win-media" data-mode-open="audio"><img class="xp-item-icon" src="assets/xp/music.ico" alt=""><span>Music Player</span></button>
+        <button class="xp-item" data-open="win-media" data-mode-open="video"><img class="xp-item-icon" src="assets/xp/camera.ico" alt=""><span>Media Player</span></button>
         <button class="xp-item" data-open="win-viewer"><img class="xp-item-icon" src="assets/xp/pictures.ico" alt=""><span>Picture Viewer</span></button>
-        <button class="xp-item" data-open="win-recycle"><img class="xp-item-icon" src="assets/xp/recycle-empty.ico" alt=""><span>Recycle Bin</span></button>
+        <button class="xp-item" data-open="win-cmd"><svg class="xp-item-icon"><use href="#i-cmd"/></svg><span>Command Prompt</span></button>
       </div>
-      <div class="xp-allprograms">
+      <div class="xp-divider"></div>
+      <div class="xp-allprograms" id="allProgramsBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
         <span>All Programs</span><span class="arrow">▸</span>
       </div>
     </div>
@@ -989,28 +1259,23 @@ LEARNING
         <img class="xp-link-icon" src="assets/xp/my-documents.ico" alt="">
         <span>My Documents</span>
       </button>
-      <button class="xp-link" data-open="win-projects">
-        <img class="xp-link-icon" src="assets/desktop/projects.webp" alt="">
-        <span>My Projects</span>
+      <button class="xp-link" data-open="win-viewer">
+        <img class="xp-link-icon" src="assets/xp/pictures.ico" alt="">
+        <span>My Pictures</span>
+      </button>
+      <button class="xp-link" data-open="win-media" data-mode-open="audio">
+        <img class="xp-link-icon" src="assets/xp/music.ico" alt="">
+        <span>My Music</span>
       </button>
       <button class="xp-link" data-open="win-resume">
         <img class="xp-link-icon" src="assets/desktop/resume.webp" alt="">
         <span>Resume.pdf</span>
       </button>
-      <button class="xp-link" data-open="win-contact">
-        <img class="xp-link-icon" src="assets/desktop/contact.webp" alt="">
-        <span>Contact</span>
-      </button>
       <div class="xp-divider"></div>
-      <button class="xp-link" data-open="win-cmd">
-        <svg class="xp-link-icon"><use href="#i-cmd"/></svg>
-        <span>Command Prompt</span>
+      <button class="xp-link" data-open="win-skills">
+        <img class="xp-link-icon" src="assets/xp/control-panel.ico" alt="">
+        <span>Control Panel</span>
       </button>
-      <button class="xp-link" id="runBtn">
-        <img class="xp-link-icon" src="assets/xp/run.ico" alt="">
-        <span>Run...</span>
-      </button>
-      <div class="xp-divider"></div>
       <button class="xp-link" id="helpBtn">
         <img class="xp-link-icon" src="assets/xp/help.ico" alt="">
         <span>Help and Support</span>
@@ -1019,7 +1284,35 @@ LEARNING
         <img class="xp-link-icon" src="assets/xp/search.ico" alt="">
         <span>Search</span>
       </button>
+      <button class="xp-link" id="runBtn">
+        <img class="xp-link-icon" src="assets/xp/run.ico" alt="">
+        <span>Run...</span>
+      </button>
     </div>
+  </div>
+
+  <!-- =========== ALL PROGRAMS FLYOUT =========== -->
+  <div class="xp-all-flyout hidden" id="allProgramsFlyout" role="menu">
+    <button class="xp-fly-item" data-open="win-about"><img src="assets/desktop/about.webp" alt=""><span>About Me</span></button>
+    <button class="xp-fly-item" data-open="win-projects"><img src="assets/desktop/projects.webp" alt=""><span>My Projects</span></button>
+    <button class="xp-fly-item" data-open="win-resume"><img src="assets/desktop/resume.webp" alt=""><span>Resume.pdf</span></button>
+    <div class="xp-fly-sep"></div>
+    <button class="xp-fly-item" data-open="win-internet"><img src="assets/xp/internet-explorer.ico" alt=""><span>Internet Explorer</span></button>
+    <button class="xp-fly-item" data-open="win-contact"><img src="assets/xp/email.ico" alt=""><span>Outlook Express</span></button>
+    <button class="xp-fly-item" data-open="win-media" data-mode-open="audio"><img src="assets/xp/music.ico" alt=""><span>Music Player</span></button>
+    <button class="xp-fly-item" data-open="win-media" data-mode-open="video"><img src="assets/xp/camera.ico" alt=""><span>Media Player</span></button>
+    <button class="xp-fly-item" data-open="win-viewer"><img src="assets/xp/pictures.ico" alt=""><span>Picture and Fax Viewer</span></button>
+    <button class="xp-fly-item" data-open="win-cmd"><svg><use href="#i-cmd"/></svg><span>Command Prompt</span></button>
+    <div class="xp-fly-sep"></div>
+    <button class="xp-fly-item" data-open="win-notepad"><img src="assets/xp/notepad.ico" alt=""><span>Notepad</span></button>
+    <button class="xp-fly-item" data-open="win-paint"><svg><use href="#i-paint"/></svg><span>Paint</span></button>
+    <button class="xp-fly-item" data-open="win-calculator"><svg><use href="#i-settings"/></svg><span>Calculator</span></button>
+    <button class="xp-fly-item" data-open="win-contact"><img src="assets/xp/email.ico" alt=""><span>MSN Messenger</span></button>
+    <button class="xp-fly-item" data-open="win-solitaire"><svg><use href="#i-picture"/></svg><span>Solitaire</span></button>
+    <button class="xp-fly-item" data-open="win-minesweeper"><svg><use href="#i-picture"/></svg><span>Minesweeper</span></button>
+    <div class="xp-fly-sep"></div>
+    <button class="xp-fly-item" data-open="win-skills"><img src="assets/xp/control-panel.ico" alt=""><span>Control Panel</span></button>
+    <button class="xp-fly-item" data-open="win-recycle"><img src="assets/xp/recycle-empty.ico" alt=""><span>Recycle Bin</span></button>
   </div>
 
   <div class="xp-start-footer">
@@ -1126,6 +1419,6 @@ LEARNING
   </div>
 </div>
 
-<script src="app.js?v=20260424-mobile-fixes-2"></script>
+<script src="app.js?v=20260425-visual-audit"></script>
 </body>
 </html>

@@ -13,6 +13,9 @@ html, body{
   -webkit-user-select: none;
   user-select: none;
   cursor: default;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 /* Keep the shell on stock Tahoma-like metrics for a closer XP feel. */
 body, body *:not(.title-bar):not(.title-bar *){
@@ -50,7 +53,8 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
   line-height: 1;
 }
 .boot-image{
-  width: 300px;
+  width: min(300px, 78vw);
+  max-width: 100%;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 3px 8px rgba(0,0,0,0.55));
@@ -163,7 +167,7 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
     linear-gradient(to right, #6a8cde 0%, #6f91e4 45%, #6486d7 100%);
 }
 .welcome-text{
-  font-size: 58px;
+  font-size: clamp(36px, 11vw, 58px);
   font-weight: 700;
   font-style: italic;
   color: #fff;
@@ -231,7 +235,8 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
   filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35));
 }
 .login-welcome-image{
-  width: 270px;
+  width: min(270px, 70vw);
+  max-width: 100%;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35));
@@ -249,7 +254,7 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
 }
 .login-brand-main{
   font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, sans-serif;
-  font-size: 35px;
+  font-size: clamp(26px, 6vw, 35px);
   font-weight: 700;
   color: #fff;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.35);
@@ -262,7 +267,7 @@ input, textarea, select{ font-family: Tahoma, Arial, sans-serif; }
   margin-left: 4px;
 }
 .login-brand-kicker{
-  font-size: 18px;
+  font-size: clamp(14px, 4.2vw, 18px);
   line-height: 1.25;
   text-align: center;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.28);
@@ -1516,6 +1521,779 @@ body.crt-on{
   z-index: 5;
 }
 
+/* =================================================
+   Windows Media Player (unified Music + Video)
+   ================================================= */
+.wmp-window.active{
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 72px);
+}
+.wmp-window.audio-mode{
+  width: 460px !important;
+}
+.wmp-window.video-mode{
+  width: min(78vw, 940px) !important;
+}
+.wmp-window .title-bar{
+  flex: 0 0 auto;
+}
+.wmp-window .window-body.wmp-body{
+  padding: 0;
+  background: #111;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.wmp-window .menubar{
+  display: none;
+}
+.wmp-tabs{
+  display: none;
+  gap: 2px;
+  background: #ece9d8;
+  border-bottom: 1px solid #aca899;
+  padding: 4px 4px 0;
+}
+.wmp-tab{
+  background: #d9d4c2;
+  border: 1px solid #aca899;
+  border-bottom: none;
+  padding: 4px 14px;
+  cursor: pointer;
+  font: 11px Tahoma;
+  border-radius: 3px 3px 0 0;
+  color: #000;
+}
+.wmp-tab.active{
+  background: #fff;
+  font-weight: 700;
+}
+.wmp-main{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: 8px;
+  padding: 8px;
+  background:
+    radial-gradient(circle at 75% 32%, rgba(255,255,255,0.08), transparent 18%),
+    linear-gradient(135deg, #121212, #242424);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.wmp-stage-wrap{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wmp-window.audio-mode .wmp-main{
+  grid-template-columns: 1fr;
+}
+.wmp-visual{
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.78), rgba(0,0,0,0.46)),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 3px);
+  color: #fff;
+  padding: 14px;
+  border: 1px solid #050505;
+  min-height: 142px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+.wmp-visual.hidden{ display: none; }
+.wmp-art{
+  width: 104px;
+  height: 104px;
+  flex: 0 0 104px;
+  filter: drop-shadow(0 12px 20px rgba(0,0,0,0.45));
+}
+.wmp-art svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wmp-art.spinning svg{
+  animation: wmpSpin 6s linear infinite;
+}
+@keyframes wmpSpin{
+  from{ transform: rotate(0deg); }
+  to  { transform: rotate(360deg); }
+}
+.wmp-meta{
+  flex: 1;
+  min-width: 0;
+}
+.wmp-title{
+  font: 700 18px Tahoma;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wmp-sub{
+  font: 12px Tahoma;
+  color: #bcd1ff;
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wmv-stage{
+  position: relative;
+  background: #000;
+  height: clamp(270px, 48vh, 430px);
+  min-height: 0;
+  border: 1px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.wmv-stage.hidden{ display: none; }
+.wmv-stage video{
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: #000;
+  object-fit: contain;
+}
+.wmv-stage video.playing{ display: block; }
+.wmv-empty{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  font: 11px Tahoma;
+  text-align: center;
+  padding: 40px 12px;
+}
+.wmp-progress{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  font: 11px "Lucida Console", monospace;
+  padding: 0 4px;
+}
+.wmp-progress input[type=range]{
+  width: 100%;
+}
+.wmp-controls{
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  background: linear-gradient(#2f3a48, #10131a);
+  border: 1px solid #000;
+  flex-wrap: wrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.wmp-controls button{
+  min-width: 34px;
+  min-height: 28px;
+  padding: 4px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  background: radial-gradient(circle at 50% 20%, #74b9ff, #145db5 62%, #082b68);
+  border: 1px solid #9fc8ff;
+  border-radius: 18px;
+  color: #fff;
+  text-shadow: 1px 1px #00235a;
+}
+.wmp-controls button:hover{
+  background: radial-gradient(circle at 50% 20%, #9ed0ff, #1d72d8 62%, #0a3479);
+}
+.wmp-controls .wmp-play{
+  min-width: 46px;
+  min-height: 38px;
+  font-size: 16px;
+  border-radius: 50%;
+}
+.wmp-controls .wmp-sep{
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.25);
+  margin: 0 2px;
+}
+.wmp-controls input[type=range]{
+  width: 108px;
+}
+.wmp-list{
+  background: #f8f8f8;
+  border: 1px solid #5d6672;
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: 232px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.wmp-window.audio-mode .wmp-list{
+  max-height: 168px;
+}
+.wmp-window.video-mode .wmp-list{
+  align-self: stretch;
+  max-height: none;
+}
+.wmp-window.video-mode .wmp-main{
+  padding: 8px;
+  gap: 8px;
+  background: #0a0a0a;
+}
+.wmp-window.video-mode .wmp-progress{
+  padding: 4px 2px;
+  color: #fff;
+  background: transparent;
+}
+.wmp-window.video-mode .wmp-list{
+  margin: 0;
+}
+.wmp-window.audio-mode .wmp-progress{
+  color: #fff;
+}
+.wmp-row{
+  display: grid;
+  grid-template-columns: 28px 1fr 24px;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 8px;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font: 11px Tahoma;
+  text-align: left;
+  color: #000;
+}
+.wmp-row:hover{
+  background: #e8f1fd;
+}
+.wmp-row.playing{
+  background: #fdecb8;
+  font-weight: 700;
+}
+.wmp-row-meta{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.wmp-row-title{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wmp-row-sub{
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wmp-row-n{
+  color: #666;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.wmp-row-play{
+  color: #1b4a94;
+  text-align: center;
+}
+
+/* =================================================
+   Classic Accessories
+   ================================================= */
+.app-body{
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: #ece9d8;
+}
+.notepad-app textarea{
+  width: 100%;
+  height: 330px;
+  resize: none;
+  border: 1px solid #808080;
+  border-left: none;
+  border-right: none;
+  padding: 8px;
+  font: 13px "Lucida Console", Consolas, monospace;
+  outline: none;
+  background: #fff;
+  color: #000;
+}
+.paint-toolbar,
+.game-toolbar{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-bottom: 1px solid #aca899;
+  font: 11px Tahoma;
+  flex-wrap: wrap;
+}
+.paint-toolbar label{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.paint-colors{
+  display: flex;
+  gap: 3px;
+}
+.paint-colors button{
+  width: 22px;
+  height: 22px;
+  border: 1px solid #555;
+  box-shadow: inset 1px 1px rgba(255,255,255,0.5);
+}
+.paint-colors button.active{
+  outline: 2px solid #1b4a94;
+}
+.paint-toolbar > button,
+.paint-toolbar #paintClear{
+  min-height: 22px;
+  height: 22px;
+  padding: 0 10px;
+  font: 11px Tahoma;
+}
+.paint-toolbar input[type="range"]{
+  width: 120px;
+}
+.paint-canvas-wrap{
+  margin: 8px;
+  background: #7f7f7f;
+  border: inset 2px #d4d0c8;
+  overflow: auto;
+  max-height: 440px;
+}
+#paintCanvas{
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+}
+.calc-app{
+  padding: 8px;
+}
+.calc-app .menubar{
+  margin: -8px -8px 8px;
+}
+#calcDisplay{
+  width: 100%;
+  height: 34px;
+  margin-bottom: 8px;
+  padding: 4px 6px;
+  border: inset 2px #d4d0c8;
+  background: #fff;
+  color: #000;
+  font: 20px "Lucida Console", monospace;
+  text-align: right;
+}
+.calc-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+.calc-grid button{
+  min-height: 32px;
+  font: 700 12px Tahoma;
+}
+.calc-equals{
+  grid-row: span 2;
+}
+.calc-zero{
+  grid-column: span 2;
+}
+.calc-grid button{ outline: none; }
+.calc-grid button:focus{ outline: none; box-shadow: none; }
+.calc-grid button::-moz-focus-inner{ border: 0; }
+.solitaire-app{
+  background: #07843f;
+  padding: 0;
+}
+.solitaire-app .menubar,
+.solitaire-app .game-toolbar{
+  background: #ece9d8;
+  margin: 0;
+}
+.solitaire-app .game-toolbar{
+  border-bottom: 1px solid #aca899;
+}
+.solitaire-table{
+  display: grid;
+  grid-template-columns: repeat(7, minmax(54px, 1fr));
+  gap: 8px;
+  padding: 12px;
+  min-height: 300px;
+}
+.sol-col{
+  min-height: 220px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.24);
+  padding-top: 2px;
+}
+.sol-card{
+  width: 54px;
+  height: 74px;
+  margin: 0 auto -45px;
+  border-radius: 5px;
+  border: 1px solid #222;
+  background: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 5px;
+  font: 700 13px Georgia, serif;
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.35);
+}
+.sol-card.red{
+  color: #c01818;
+}
+.sol-card.back{
+  background:
+    linear-gradient(45deg, rgba(255,255,255,0.18) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.18) 75%),
+    #234fbd;
+  background-size: 10px 10px;
+  color: transparent;
+}
+.mines-app{
+  padding: 8px;
+  background: #c0c0c0;
+  border: inset 2px #fff;
+}
+.mine-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 8px;
+  border: inset 2px #fff;
+}
+.mine-top span{
+  min-width: 48px;
+  padding: 2px 4px;
+  background: #000;
+  color: #ff2424;
+  font: 20px "Lucida Console", monospace;
+  text-align: center;
+}
+#mineReset{
+  width: 34px;
+  height: 30px;
+  font-weight: 700;
+}
+.mine-grid{
+  display: grid;
+  grid-template-columns: repeat(9, 26px);
+  border: inset 2px #fff;
+  width: max-content;
+  margin: 0 auto;
+}
+.mine-cell{
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  border: outset 2px #fff;
+  background: #c0c0c0;
+  font: 700 13px Tahoma;
+  line-height: 22px;
+  text-align: center;
+  padding: 0;
+  overflow: hidden;
+}
+.mine-cell:focus{ outline: none; }
+.mine-cell.open{
+  border: inset 1px #888;
+  background: #d4d0c8;
+}
+.mine-cell.open:focus,
+.mine-cell.flag:focus{ outline: none; }
+.mine-cell.flag{
+  color: #c01818;
+}
+.mine-cell.n1{ color:#0000ff; }
+.mine-cell.n2{ color:#008000; }
+.mine-cell.n3{ color:#ff0000; }
+.mine-cell.n4{ color:#000080; }
+
+/* =================================================
+   All Programs flyout
+   ================================================= */
+.xp-all-flyout{
+  position: fixed;
+  z-index: 25000;
+  min-width: 240px;
+  max-width: 280px;
+  max-height: 70vh;
+  background: #fff;
+  border: 1px solid #0747b3;
+  box-shadow: 3px 3px 14px rgba(0,0,0,0.35);
+  padding: 4px 0;
+  font: 12px Tahoma;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.xp-fly-item{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 14px 5px 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: 12px Tahoma;
+  color: #000;
+  text-align: left;
+}
+.xp-fly-item img,
+.xp-fly-item svg{
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.xp-fly-item span{
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.xp-fly-item:hover{
+  background: linear-gradient(#2761d2, #1c4fa8);
+  color: #fff;
+}
+.xp-fly-sep{
+  height: 1px;
+  background: #d0cfc4;
+  margin: 4px 8px;
+}
+
+/* =================================================
+   CatchCash project detail
+   ================================================= */
+.cc-detail{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 4px 12px;
+}
+.cc-head{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.cc-icon{
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.cc-head h1{
+  margin: 0;
+  font: 700 20px "Trebuchet MS", Tahoma, sans-serif;
+  color: #1b4a94;
+}
+.cc-chip{
+  font: 400 14px Tahoma;
+  color: #666;
+  margin-left: 6px;
+}
+.cc-sub{
+  font: 11px Tahoma;
+  color: #666;
+  margin: 4px 0 8px;
+}
+.cc-tag-row{
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cc-tag{
+  display: inline-block;
+  padding: 2px 10px;
+  background: #e8f1fd;
+  border: 1px solid #b4c8e4;
+  border-radius: 10px;
+  font: 10px Tahoma;
+  color: #1b4a94;
+}
+.cc-section h2{
+  font: 700 14px "Trebuchet MS", Tahoma, sans-serif;
+  color: #1b4a94;
+  margin: 0 0 6px;
+  border-bottom: 1px solid #b4c0cb;
+  padding-bottom: 3px;
+}
+.cc-section p{
+  font: 12px Tahoma;
+  line-height: 1.55;
+  margin: 4px 0;
+  color: #1a1a1a;
+}
+.cc-features{
+  margin: 4px 0;
+  padding-left: 18px;
+  font: 12px Tahoma;
+  line-height: 1.55;
+  color: #1a1a1a;
+}
+.cc-features li{
+  margin: 2px 0;
+}
+.cc-shots{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.cc-shot{
+  background: #fff;
+  border: 1px solid #c8d0dd;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font: inherit;
+}
+.cc-shot img{
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background: #f2f5fa;
+  display: block;
+}
+.cc-shot span{
+  font: 11px Tahoma;
+  text-align: center;
+  color: #21324a;
+}
+.cc-shot:hover{
+  border-color: #1b4a94;
+  background: #e8f1fd;
+}
+.cc-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cc-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(#fff,#dadada);
+  border: 1px solid #888;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #000;
+  font: 12px Tahoma;
+  cursor: pointer;
+}
+.cc-btn:hover{
+  background: linear-gradient(#fff,#c8d4ea);
+}
+.cc-btn-primary{
+  background: linear-gradient(#4ea0ff,#1158b8);
+  color: #fff;
+  border-color: #0747b3;
+  font-weight: 700;
+}
+.cc-btn-primary:hover{
+  background: linear-gradient(#6cb2ff,#1466cf);
+  color: #fff;
+}
+.cc-note{
+  font: 11px Tahoma;
+  color: #666;
+  margin: 6px 0 0;
+}
+
+/* =================================================
+   CatchCash lightbox
+   ================================================= */
+.cc-lightbox{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 60000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+.cc-lightbox.hidden{ display: none; }
+.cc-lightbox img{
+  max-width: 90vw;
+  max-height: 80vh;
+  background: #fff;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+.cc-lb-close{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #fff;
+  border: 1px solid #888;
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.cc-lb-caption{
+  color: #fff;
+  font: 12px Tahoma;
+  text-align: center;
+}
+
+/* =================================================
+   Coming Soon dialog
+   ================================================= */
+.comingsoon-dialog{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 50000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.comingsoon-dialog.hidden{ display: none; }
+.comingsoon-dialog .window{
+  width: 340px;
+  max-width: 92vw;
+}
+.cs-body{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font: 12px Tahoma;
+  margin-bottom: 10px;
+}
+.cs-icon{
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+.cs-body p{
+  margin: 0;
+  line-height: 1.5;
+}
+
 /* Mobile responsive fixes */
 @media (max-width: 768px){
   html,
@@ -1526,6 +2304,52 @@ body.crt-on{
     overflow-x: hidden;
     overflow-y: auto;
     touch-action: manipulation;
+  }
+
+  /* Prevent iOS Safari zoom-on-focus: any focusable input/textarea/select
+     must render at >=16px. We only target focusable controls — keeping the
+     11/12px chrome on toolbars/menus that look correct in XP. */
+  input,
+  textarea,
+  select{
+    font-size: 16px;
+  }
+  .field-row input,
+  .field-row textarea,
+  #cmdInput,
+  #internetAddress,
+  #runInput,
+  #notepadText{
+    font-size: 16px;
+  }
+  /* Slightly larger reading text in content surfaces (still XP-feel). */
+  .about-right p{ line-height: 1.55; }
+
+  /* Touch-friendly window control buttons (xp.css ships with ~16x14 buttons,
+     too small to tap). Keep the XP look but enlarge the hit target. */
+  .title-bar-controls button{
+    min-width: 28px;
+    min-height: 24px;
+  }
+
+  /* Hide the legacy resume text by default; it's a fallback below. */
+  .resume-pdf{
+    display: none;
+  }
+  .legacy-resume-text{
+    display: block;
+    max-height: calc(100dvh - 200px);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Larger lightbox close button on touch */
+  .cc-lb-close{
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    top: 12px;
+    right: 12px;
   }
 
   body{
@@ -1544,7 +2368,7 @@ body.crt-on{
     inset: 0 0 32px 0;
     display: block;
     padding: 0;
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: center;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -1768,6 +2592,7 @@ body.crt-on{
   .cmd-body{
     min-height: 220px;
     max-height: calc(100dvh - 155px);
+    font-size: 16px;
   }
 
   .viewer-body{
@@ -1817,6 +2642,134 @@ body.crt-on{
 
   .skill-row em{
     text-align: left;
+  }
+
+  .wmp-window.active{
+    width: calc(100vw - 16px) !important;
+    height: calc(100dvh - 92px);
+    max-height: calc(100dvh - 92px);
+  }
+
+  .wmp-window .window-body.wmp-body{
+    max-height: none;
+    overflow: hidden;
+  }
+
+  .wmp-window .menubar{
+    flex: 0 0 auto;
+  }
+
+  .wmp-tabs{
+    flex: 0 0 auto;
+    overflow-x: auto;
+  }
+
+  .wmp-main{
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 6px;
+    gap: 5px;
+  }
+
+  .wmp-stage-wrap{
+    gap: 5px;
+  }
+
+  .wmp-visual{
+    min-height: 110px;
+    padding: 8px;
+    gap: 10px;
+  }
+
+  .wmp-art{
+    width: 82px;
+    height: 82px;
+    flex-basis: 82px;
+  }
+
+  .wmv-stage{
+    height: clamp(170px, 34dvh, 250px);
+  }
+
+  .wmp-controls{
+    display: grid;
+    grid-template-columns: 36px 48px 36px 36px minmax(58px, 1fr) 36px;
+    gap: 5px;
+    padding: 5px;
+    overflow: hidden;
+  }
+
+  .wmp-controls button{
+    min-width: 0;
+    width: 100%;
+    padding: 4px 6px;
+  }
+
+  .wmp-controls .wmp-sep{
+    display: none;
+  }
+
+  .wmp-controls input[type=range]{
+    width: 100%;
+    min-width: 58px;
+  }
+
+  .wmp-list{
+    max-height: 150px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .wmp-window.audio-mode .wmp-list{
+    max-height: 178px;
+  }
+
+  .wmp-window.video-mode .wmp-list{
+    max-height: 118px;
+  }
+
+  .wmp-row{
+    grid-template-columns: 22px minmax(0, 1fr) 18px;
+    padding: 5px 6px;
+  }
+
+  .wmp-title{
+    white-space: normal;
+  }
+
+  .notepad-app textarea{
+    height: calc(100dvh - 190px);
+    min-height: 240px;
+  }
+
+  .paint-canvas-wrap{
+    max-height: calc(100dvh - 230px);
+  }
+
+  .solitaire-table{
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    padding: 8px;
+    min-height: 240px;
+  }
+
+  .sol-card{
+    width: clamp(34px, calc((100vw - 80px) / 7), 46px);
+    height: auto;
+    aspect-ratio: 46 / 64;
+    margin-bottom: -38px;
+    font-size: 11px;
+    padding: 3px;
+  }
+
+  .mine-grid{
+    grid-template-columns: repeat(9, 24px);
+  }
+
+  .mine-cell{
+    width: 24px;
+    height: 24px;
   }
 
   fieldset,
@@ -1934,6 +2887,79 @@ body.crt-on{
     gap: 12px;
   }
 
+  .power-choice,
+  .logoff-choice{
+    width: 84px;
+    font-size: 12px;
+  }
+
+  .power-choice-icon{
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Login screen layout — stack the brand and user card so neither overflows. */
+  .login-middle{
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px 16px 14px;
+  }
+  .login-divider{
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.45), transparent);
+  }
+  .login-brand{
+    width: 100%;
+    max-width: 320px;
+  }
+  .user-card{
+    min-width: 0;
+    width: 100%;
+    max-width: 320px;
+    padding: 8px 12px 8px 8px;
+  }
+  .user-avatar{
+    width: 64px;
+    height: 64px;
+  }
+  .user-name{ font-size: 18px; }
+  .user-hint{ font-size: 14px; }
+
+  /* Login bottom — stack the power button and helper text on phones. */
+  .login-bottom{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 16px 12px;
+  }
+  .login-bottom-right{
+    text-align: left;
+    max-width: none;
+    font-size: 11px;
+  }
+  .power-btn{
+    align-self: flex-start;
+  }
+
+  /* Boot screen scales down on phones */
+  .boot-inner{
+    gap: 12px;
+  }
+  .boot-bar{
+    margin-left: 0;
+    align-self: center;
+  }
+  .boot-copyright{
+    left: 12px;
+    bottom: 12px;
+    font-size: 9px;
+  }
+  .boot-microsoft{
+    right: 14px;
+    bottom: 14px;
+  }
+
   body.crt-on{
     filter: none;
   }
@@ -1949,5 +2975,125 @@ body.crt-on{
       );
     mix-blend-mode: normal;
     opacity: 0.45;
+  }
+}
+
+/* Very small phones (iPhone SE / older Android, ≤380px) */
+@media (max-width: 380px){
+  .desktop > .icon{
+    width: 76px !important;
+  }
+  .desktop > .icon[data-open="win-recycle"]{
+    right: 6px !important;
+  }
+  .icon span{
+    max-width: 72px;
+    font-size: 11px;
+  }
+  .window{
+    left: 4px !important;
+    right: 4px !important;
+    width: calc(100vw - 8px) !important;
+    max-width: calc(100vw - 8px);
+  }
+  .ie-content,
+  .about-layout,
+  .internet-page{
+    padding: 8px;
+  }
+  .projects-grid,
+  .cc-shots{
+    grid-template-columns: 1fr;
+  }
+  .cc-shot img{
+    height: 180px;
+  }
+  .file-grid{
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  }
+  .field-row{
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 5px;
+  }
+  .skill-row{
+    grid-template-columns: 80px minmax(0, 1fr) 30px;
+  }
+  .xp-start{
+    width: calc(100vw - 8px);
+  }
+  .power-choice,
+  .logoff-choice{
+    width: 76px;
+    font-size: 11px;
+  }
+  .power-choice-icon{
+    width: 44px;
+    height: 44px;
+  }
+  .power-dialog-actions,
+  .logoff-dialog-actions{
+    gap: 8px;
+  }
+  .xp-power-body{
+    padding: 18px 8px 16px;
+  }
+  .xp-power-title{
+    font-size: 16px;
+  }
+  .taskbar-item{
+    max-width: 80px;
+  }
+  .login-middle{
+    padding: 14px 10px 10px;
+  }
+  .user-avatar{ width: 56px; height: 56px; }
+  .login-brand-kicker{ font-size: 13px; }
+}
+
+/* Respect users who prefer reduced motion. Keeps interactivity but kills the
+   loops, shimmers, and large transitions that can cause discomfort. */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .boot-bar-inner{ animation: none; left: 1px; right: 1px; width: auto; }
+  .welcome-text{ animation: none; opacity: 1; }
+  .wmp-art.spinning svg{ animation: none; }
+  .shutdown-spinner{ animation: none; border-top-color: rgba(255,255,255,0.6); }
+}
+
+/* Hover-capable pointers get the painter-style chrome; touch-only devices
+   should not get hover-only feedback that never lifts. */
+@media (hover: none){
+  .icon:hover,
+  .file-item:hover,
+  .menubar span:hover,
+  .tb-btn:hover,
+  .ie-btn:hover,
+  .xp-item:hover,
+  .xp-link:hover{
+    background: transparent;
+    color: inherit;
+    border-color: transparent;
+  }
+  .icon:active{
+    background: rgba(49,106,197,0.45);
+  }
+  .file-item:active{
+    background: rgba(49,106,197,0.35);
+  }
+  .menubar span:active,
+  .tb-btn:active,
+  .ie-btn:active{
+    background: #fdecb8;
+    border-color: #d4a837;
+  }
+  .xp-item:active,
+  .xp-link:active{
+    background: linear-gradient(to bottom, #2761d2, #1c4fa8);
+    color: #fff;
   }
 }

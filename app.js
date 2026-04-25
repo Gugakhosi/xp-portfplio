@@ -249,6 +249,7 @@ document.addEventListener("click", (e) => {
   if (opener.matches(".icon, .file-item")) return;
   e.preventDefault();
   openWin(opener.dataset.open);
+  if (opener.dataset.modeOpen && typeof setMediaMode === "function") setMediaMode(opener.dataset.modeOpen);
   playSound("click");
 });
 
@@ -481,6 +482,10 @@ function runExecute(){
     skills: "win-skills", control: "win-skills", "control panel": "win-skills",
     viewer: "win-viewer", picture: "win-viewer", pictures: "win-viewer", mspaint: "win-viewer",
     recycle: "win-recycle",
+    wmplayer: "win-media", mplayer: "win-media", mplayer2: "win-media",
+    music: "win-media", video: "win-media", media: "win-media",
+    notepad: "win-notepad", paint: "win-paint", calc: "win-calculator", calculator: "win-calculator",
+    solitaire: "win-solitaire", minesweeper: "win-minesweeper",
   };
   if (!cmd) {
     closeRunDialog();
@@ -749,7 +754,7 @@ const COMMANDS = {
     window.open(url, "_blank", "noopener");
     cmdWrite(`Opening ${escapeHtml(url)}...`);
   },
-  start(args){ const m = { about:"win-about", projects:"win-projects", resume:"win-resume", contact:"win-contact", skills:"win-skills", cmd:"win-cmd", explorer:"win-mycomputer", documents:"win-documents", network:"win-network", links:"win-network", internet:"win-internet", iexplore:"win-internet", browser:"win-internet", viewer:"win-viewer" }; const w = m[(args[0] || "").toLowerCase()]; if (w){ openWin(w); cmdWrite(`Starting ${escapeHtml(args[0])}...`); } else cmdWrite(`Unknown app: ${escapeHtml(args[0] || "")}`); },
+  start(args){ const m = { about:"win-about", projects:"win-projects", resume:"win-resume", contact:"win-contact", skills:"win-skills", cmd:"win-cmd", explorer:"win-mycomputer", documents:"win-documents", network:"win-network", links:"win-network", internet:"win-internet", iexplore:"win-internet", browser:"win-internet", viewer:"win-viewer", notepad:"win-notepad", paint:"win-paint", calc:"win-calculator", calculator:"win-calculator", solitaire:"win-solitaire", minesweeper:"win-minesweeper" }; const w = m[(args[0] || "").toLowerCase()]; if (w){ openWin(w); cmdWrite(`Starting ${escapeHtml(args[0])}...`); } else cmdWrite(`Unknown app: ${escapeHtml(args[0] || "")}`); },
   color(args){
     const value = (args[0] || "").toLowerCase();
     if (value === "0a") {
@@ -948,6 +953,7 @@ function topVisibleWindow(){
 let selBox = null, selStart = null;
 desktop.addEventListener("mousedown", (e) => {
   if (e.target !== desktop) return;
+  if (isMobileLayout()) return;
   selStart = { x: e.clientX, y: e.clientY };
   selBox = document.createElement("div");
   selBox.className = "select-box";
@@ -993,3 +999,578 @@ if (fullscreenBtn) {
     }
   });
 }
+
+/* ---------- COMING SOON DIALOG ---------- */
+const comingSoonDialog = $("#comingSoonDialog");
+function showComingSoon(name){
+  if (!comingSoonDialog) return;
+  const heading = $("#csHeading");
+  const message = $("#csMessage");
+  const title   = $("#csTitleText");
+  if (name) {
+    if (heading) heading.textContent = `${name} — Coming Soon`;
+    if (message) message.textContent = `${name} isn't available yet. I'm still working on it — check back in a future update.`;
+    if (title)   title.textContent   = `${name}`;
+  } else {
+    if (heading) heading.textContent = "Coming Soon";
+    if (message) message.textContent = "This feature isn't available yet. Check back in a future update.";
+    if (title)   title.textContent   = "Coming Soon";
+  }
+  comingSoonDialog.classList.remove("hidden");
+  playSound("click");
+}
+function hideComingSoon(){ comingSoonDialog?.classList.add("hidden"); }
+$("#csClose")?.addEventListener("click", hideComingSoon);
+$("#csOk")?.addEventListener("click", hideComingSoon);
+comingSoonDialog?.addEventListener("click", (e) => {
+  if (e.target === comingSoonDialog) hideComingSoon();
+});
+
+/* ---------- ALL PROGRAMS FLYOUT ---------- */
+const allProgramsBtn = $("#allProgramsBtn");
+const allProgramsFlyout = $("#allProgramsFlyout");
+function positionAllProgramsFlyout(){
+  if (!allProgramsFlyout || !allProgramsBtn) return;
+  const startRect = startMenu.getBoundingClientRect();
+  if (isMobileLayout()){
+    allProgramsFlyout.style.left = "4px";
+    allProgramsFlyout.style.right = "4px";
+    allProgramsFlyout.style.bottom = `${window.innerHeight - startRect.top + 4}px`;
+    allProgramsFlyout.style.top = "auto";
+    allProgramsFlyout.style.maxHeight = "50vh";
+  } else {
+    const btnRect = allProgramsBtn.getBoundingClientRect();
+    allProgramsFlyout.style.left = `${startRect.right - 4}px`;
+    allProgramsFlyout.style.right = "auto";
+    allProgramsFlyout.style.top = "auto";
+    allProgramsFlyout.style.bottom = `${window.innerHeight - btnRect.bottom}px`;
+    allProgramsFlyout.style.maxHeight = `${Math.min(window.innerHeight - 60, 480)}px`;
+  }
+}
+function openAllPrograms(){
+  if (!allProgramsFlyout) return;
+  allProgramsFlyout.classList.remove("hidden");
+  allProgramsBtn?.setAttribute("aria-expanded", "true");
+  positionAllProgramsFlyout();
+}
+function closeAllPrograms(){
+  allProgramsFlyout?.classList.add("hidden");
+  allProgramsBtn?.setAttribute("aria-expanded", "false");
+}
+allProgramsBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (allProgramsFlyout?.classList.contains("hidden")) openAllPrograms();
+  else closeAllPrograms();
+});
+allProgramsBtn?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    allProgramsBtn.click();
+  }
+});
+allProgramsFlyout?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".xp-fly-item");
+  if (!btn) return;
+  if (btn.dataset.coming) {
+    closeAllPrograms();
+    closeStartMenu();
+    showComingSoon(btn.dataset.coming);
+    return;
+  }
+  if (btn.dataset.open) {
+    closeAllPrograms();
+    closeStartMenu();
+    openWin(btn.dataset.open);
+    if (btn.dataset.modeOpen) setMediaMode(btn.dataset.modeOpen);
+    playSound("click");
+  }
+});
+document.addEventListener("click", (e) => {
+  if (allProgramsFlyout && !allProgramsFlyout.classList.contains("hidden")) {
+    if (!allProgramsFlyout.contains(e.target) && e.target !== allProgramsBtn && !allProgramsBtn.contains(e.target)) {
+      closeAllPrograms();
+    }
+  }
+});
+window.addEventListener("resize", () => {
+  if (allProgramsFlyout && !allProgramsFlyout.classList.contains("hidden")) positionAllProgramsFlyout();
+});
+
+/* ---------- WINDOWS MEDIA PLAYER (unified audio + video) ---------- */
+const mediaPlaylists = {
+  audio: [
+    { title: "50 Cent - In Da Club", sub: "Local MP3 - 128k", src: "assets/media/music/50-cent-in-da-club.mp3" },
+    { title: "Eminem - Lose Yourself", sub: "Local MP3 - 128k", src: "assets/media/music/eminem-lose-yourself.mp3" },
+    { title: "Nelly - Hot In Herre", sub: "Local MP3 - 64k", src: "assets/media/music/nelly-hot-in-herre.mp3" },
+    { title: "50 Cent ft. Olivia - Candy Shop", sub: "Local MP3 - 128k", src: "assets/media/music/50-cent-candy-shop.mp3" },
+    { title: "Survivor - Eye Of The Tiger", sub: "Local MP3 - 128k", src: "assets/media/music/survivor-eye-of-the-tiger.mp3" },
+  ],
+  video: [
+    { title: "Khvicha Kvaratskhelia - The Georgian Magic", sub: "Local MP4 - 720p", src: "assets/media/videos/khvicha-kvaratskhelia-highlights.mp4" },
+    { title: "Ilia Topuria - HIGHLIGHTS EL MATADOR", sub: "Local MP4 - 1080p", src: "assets/media/videos/ilia-topuria-highlights.mp4" },
+    { title: "Merab Dvalishvili Highlights - THE MACHINE", sub: "Local MP4 - 1080p", src: "assets/media/videos/merab-dvalishvili-highlights.mp4" },
+  ],
+};
+const mediaState = { mode: "audio", idx: { audio: -1, video: -1 } };
+const mediaAudio = $("#wmpAudioEl");
+const mediaVideo = $("#wmvVideo");
+if (mediaAudio) mediaAudio.volume = 0.7;
+if (mediaVideo) { mediaVideo.volume = 0.7; mediaVideo.preload = "metadata"; }
+
+function fmtTime(s){
+  if (!isFinite(s) || s < 0) s = 0;
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60).toString().padStart(2, "0");
+  return `${m}:${sec}`;
+}
+function mediaEl(mode){ return mode === "video" ? mediaVideo : mediaAudio; }
+function currentMedia(){ return mediaEl(mediaState.mode); }
+function currentList(){  return mediaPlaylists[mediaState.mode]; }
+function currentIdx(){   return mediaState.idx[mediaState.mode]; }
+function setCurrentIdx(i){ mediaState.idx[mediaState.mode] = i; }
+
+function renderMediaList(){
+  const list = $("#wmpList");
+  if (!list) return;
+  const items  = currentList();
+  const active = currentIdx();
+  const playing = currentMedia() && !currentMedia().paused && active >= 0;
+  list.innerHTML = items.map((t, i) => `
+    <button class="wmp-row ${i === active ? "playing" : ""}" data-idx="${i}" role="option">
+      <span class="wmp-row-n">${i+1}</span>
+      <span class="wmp-row-meta">
+        <span class="wmp-row-title">${escapeHtml(t.title)}</span>
+        <span class="wmp-row-sub">${escapeHtml(t.sub)}</span>
+      </span>
+      <span class="wmp-row-play">${i === active && playing ? "\u25B6" : ""}</span>
+    </button>
+  `).join("");
+  list.querySelectorAll(".wmp-row").forEach(row => {
+    row.addEventListener("click", () => mediaPlayIndex(+row.dataset.idx));
+  });
+}
+
+function setMediaMode(mode){
+  if (mode !== "audio" && mode !== "video") return;
+  const sameMode = mediaState.mode === mode;
+  // pause current element before switching
+  const prev = currentMedia();
+  if (!sameMode && prev && !prev.paused) prev.pause();
+  mediaState.mode = mode;
+  $("#win-media")?.classList.toggle("audio-mode", mode === "audio");
+  $("#win-media")?.classList.toggle("video-mode", mode === "video");
+  const windowTitle = mode === "video" ? "Media Player" : "Music Player";
+  const titleNode = $("#mediaWindowTitle");
+  if (titleNode) titleNode.textContent = windowTitle;
+  const win = $("#win-media");
+  if (win) win.dataset.title = windowTitle;
+  const taskLabel = document.querySelector('.taskbar-item[data-win="win-media"] span');
+  if (taskLabel) taskLabel.textContent = windowTitle;
+  $$(".wmp-tab").forEach(t => {
+    const on = t.dataset.mode === mode;
+    t.classList.toggle("active", on);
+    t.setAttribute("aria-selected", on ? "true" : "false");
+  });
+  const visual = $("#wmpVisual");
+  const stage  = $("#wmvStage");
+  if (mode === "audio") {
+    visual?.classList.remove("hidden");
+    stage?.classList.add("hidden");
+  } else {
+    visual?.classList.add("hidden");
+    stage?.classList.remove("hidden");
+  }
+  const modeLabel = $("#wmpMode");
+  if (modeLabel) modeLabel.textContent = mode === "video" ? "Video" : "Music";
+  // restore display state of the now-active element
+  const active = currentMedia();
+  if (active) {
+    updateMediaProgress();
+    $("#wmpDuration").textContent = fmtTime(active.duration || 0);
+    $("#wmpPlay").textContent = active.paused ? "\u25B6" : "\u23F8";
+    if (mode === "video") {
+      const idx = currentIdx();
+      $("#wmvVideo").style.display = idx >= 0 ? "block" : "none";
+      $("#wmvEmpty").style.display = idx >= 0 ? "none" : "flex";
+      $("#wmpArt")?.classList.remove("spinning");
+    } else {
+      if (!active.paused) $("#wmpArt")?.classList.add("spinning");
+      else $("#wmpArt")?.classList.remove("spinning");
+      const idx = currentIdx();
+      if (idx >= 0) {
+        const t = currentList()[idx];
+        $("#wmpTitle").textContent = t.title;
+        $("#wmpSub").textContent   = t.sub;
+      }
+    }
+  }
+  if (currentIdx() < 0) {
+    $("#wmpCurrent").textContent = "0:00";
+    $("#wmpDuration").textContent = "0:00";
+    $("#wmpPlay").textContent = "\u25B6";
+    $("#wmpStatus").textContent = "Ready";
+    if (mode === "audio") {
+      $("#wmpTitle").textContent = "Nothing playing";
+      $("#wmpSub").textContent = "Select a track from the playlist";
+    }
+  } else {
+    const t = currentList()[currentIdx()];
+    $("#wmpStatus").textContent = active && !active.paused ? `Playing - ${t.title}` : "Ready";
+  }
+  renderMediaList();
+}
+
+function mediaPlayIndex(i){
+  const el = currentMedia();
+  const items = currentList();
+  if (!el || i < 0 || i >= items.length) return;
+  setCurrentIdx(i);
+  const t = items[i];
+  el.src = t.src;
+  $("#wmpStatus").textContent = "Buffering...";
+  if (mediaState.mode === "audio") {
+    $("#wmpTitle").textContent = t.title;
+    $("#wmpSub").textContent   = t.sub;
+  } else {
+    $("#wmvVideo").style.display = "block";
+    $("#wmvVideo").classList.add("playing");
+    $("#wmvEmpty").style.display = "none";
+  }
+  el.play().then(() => {
+    $("#wmpStatus").textContent = `Playing - ${t.title}`;
+    $("#wmpPlay").textContent = "\u23F8";
+    if (mediaState.mode === "audio") $("#wmpArt")?.classList.add("spinning");
+  }).catch(() => {
+    $("#wmpStatus").textContent = "Unable to play — check connection";
+  });
+  renderMediaList();
+}
+
+function mediaTogglePlay(){
+  const el = currentMedia();
+  if (!el) return;
+  if (currentIdx() < 0) { mediaPlayIndex(0); return; }
+  if (el.paused) {
+    el.play().catch(() => {});
+  } else {
+    el.pause();
+  }
+}
+
+function updateMediaProgress(){
+  const el = currentMedia();
+  const seek = $("#wmpSeek");
+  if (!el || !seek || seek.dataset.seeking === "1") return;
+  const pct = (el.currentTime / (el.duration || 1)) * 100;
+  seek.value = isFinite(pct) ? pct : 0;
+  $("#wmpCurrent").textContent = fmtTime(el.currentTime);
+}
+
+$$(".wmp-tab").forEach(tab => {
+  tab.addEventListener("click", () => setMediaMode(tab.dataset.mode));
+});
+$("#wmpPlay")?.addEventListener("click", mediaTogglePlay);
+$("#wmpPrev")?.addEventListener("click", () => {
+  const n = currentList().length;
+  mediaPlayIndex((currentIdx() - 1 + n) % n);
+});
+$("#wmpNext")?.addEventListener("click", () => {
+  const n = currentList().length;
+  mediaPlayIndex((currentIdx() + 1) % n);
+});
+
+[mediaAudio, mediaVideo].forEach(el => {
+  if (!el) return;
+  el.addEventListener("timeupdate", () => { if (el === currentMedia()) updateMediaProgress(); });
+  el.addEventListener("loadedmetadata", () => {
+    if (el === currentMedia()) $("#wmpDuration").textContent = fmtTime(el.duration);
+  });
+  el.addEventListener("ended", () => {
+    if (el !== currentMedia()) return;
+    const n = currentList().length;
+    mediaPlayIndex((currentIdx() + 1) % n);
+  });
+  el.addEventListener("play", () => {
+    if (el !== currentMedia()) return;
+    $("#wmpPlay").textContent = "\u23F8";
+    if (mediaState.mode === "audio") $("#wmpArt")?.classList.add("spinning");
+  });
+  el.addEventListener("pause", () => {
+    if (el !== currentMedia()) return;
+    $("#wmpPlay").textContent = "\u25B6";
+    $("#wmpArt")?.classList.remove("spinning");
+  });
+  el.addEventListener("error", () => {
+    if (el === currentMedia()) $("#wmpStatus").textContent = "Error loading media";
+  });
+});
+
+const wmpSeek = $("#wmpSeek");
+wmpSeek?.addEventListener("input", () => {
+  const el = currentMedia();
+  wmpSeek.dataset.seeking = "1";
+  if (el && isFinite(el.duration)) {
+    $("#wmpCurrent").textContent = fmtTime((wmpSeek.value / 100) * el.duration);
+  }
+});
+wmpSeek?.addEventListener("change", () => {
+  const el = currentMedia();
+  if (el && isFinite(el.duration)) el.currentTime = (wmpSeek.value / 100) * el.duration;
+  wmpSeek.dataset.seeking = "0";
+});
+const wmpVol = $("#wmpVol");
+wmpVol?.addEventListener("input", () => {
+  const v = +wmpVol.value;
+  if (mediaAudio) { mediaAudio.volume = v; mediaAudio.muted = false; }
+  if (mediaVideo) { mediaVideo.volume = v; mediaVideo.muted = false; }
+  $("#wmpMute").textContent = v === 0 ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+});
+$("#wmpMute")?.addEventListener("click", () => {
+  const el = currentMedia();
+  if (!el) return;
+  el.muted = !el.muted;
+  if (mediaAudio) mediaAudio.muted = el.muted;
+  if (mediaVideo) mediaVideo.muted = el.muted;
+  $("#wmpMute").textContent = el.muted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+});
+$("#wmpFs")?.addEventListener("click", () => {
+  if (mediaState.mode !== "video" || !mediaVideo) {
+    setMediaMode("video");
+    return;
+  }
+  if (mediaVideo.requestFullscreen)        mediaVideo.requestFullscreen();
+  else if (mediaVideo.webkitEnterFullscreen) mediaVideo.webkitEnterFullscreen();
+});
+
+renderMediaList();
+setMediaMode("audio");
+
+/* Pause media when the window closes/minimizes */
+function pauseAllMedia(){
+  if (mediaAudio && !mediaAudio.paused) mediaAudio.pause();
+  if (mediaVideo && !mediaVideo.paused) mediaVideo.pause();
+}
+const _origClose = closeWin;
+closeWin = function(id){ if (id === "win-media") pauseAllMedia(); _origClose(id); };
+const _origMin = minimizeWin;
+minimizeWin = function(id){ if (id === "win-media") pauseAllMedia(); _origMin(id); };
+
+/* ---------- CLASSIC ACCESSORIES ---------- */
+$("#notepadText")?.addEventListener("input", () => {
+  const text = $("#notepadText").value;
+  $("#notepadStatus").textContent = `${text.length} chars`;
+});
+
+const calcDisplay = $("#calcDisplay");
+let calcExpr = "";
+function updateCalc(value){ if (calcDisplay) calcDisplay.value = value || "0"; }
+$("#calcGrid")?.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-calc]");
+  if (!btn) return;
+  const v = btn.dataset.calc;
+  if (v === "C") calcExpr = "";
+  else if (v === "back") calcExpr = calcExpr.slice(0, -1);
+  else if (v === "=") {
+    try {
+      calcExpr = String(Function(`"use strict";return (${calcExpr || "0"})`)());
+      if (!/^-?\d+(\.\d+)?$/.test(calcExpr)) calcExpr = "Error";
+    } catch {
+      calcExpr = "Error";
+    }
+  } else {
+    if (calcExpr === "Error") calcExpr = "";
+    if (/^[0-9+\-*/.]$/.test(v)) calcExpr += v;
+  }
+  updateCalc(calcExpr);
+});
+
+const paintCanvas = $("#paintCanvas");
+const paintCtx = paintCanvas?.getContext("2d");
+let paintColor = "#000000";
+let painting = false;
+function initPaint(){
+  if (!paintCtx || paintCanvas.dataset.ready) return;
+  paintCtx.fillStyle = "#ffffff";
+  paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+  paintCtx.lineCap = "round";
+  paintCtx.lineJoin = "round";
+  paintCanvas.dataset.ready = "1";
+  $("#paintColors button")?.classList.add("active");
+}
+function paintPoint(e){
+  const r = paintCanvas.getBoundingClientRect();
+  return {
+    x: ((e.clientX - r.left) / r.width) * paintCanvas.width,
+    y: ((e.clientY - r.top) / r.height) * paintCanvas.height,
+  };
+}
+paintCanvas?.addEventListener("pointerdown", (e) => {
+  initPaint();
+  painting = true;
+  paintCanvas.setPointerCapture(e.pointerId);
+  const p = paintPoint(e);
+  paintCtx.beginPath();
+  paintCtx.moveTo(p.x, p.y);
+});
+paintCanvas?.addEventListener("pointermove", (e) => {
+  if (!painting) return;
+  const p = paintPoint(e);
+  paintCtx.strokeStyle = paintColor;
+  paintCtx.lineWidth = +$("#paintSize").value || 6;
+  paintCtx.lineTo(p.x, p.y);
+  paintCtx.stroke();
+});
+["pointerup", "pointercancel", "pointerleave"].forEach(type => {
+  paintCanvas?.addEventListener(type, () => { painting = false; });
+});
+$("#paintColors")?.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-color]");
+  if (!btn) return;
+  paintColor = btn.dataset.color;
+  $$("#paintColors button").forEach(b => b.classList.toggle("active", b === btn));
+});
+$("#paintClear")?.addEventListener("click", () => {
+  initPaint();
+  paintCtx.fillStyle = "#ffffff";
+  paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+});
+initPaint();
+
+function dealSolitaire(){
+  const table = $("#solitaireTable");
+  if (!table) return;
+  const suits = ["♠", "♥", "♦", "♣"];
+  const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  const deck = suits.flatMap(s => ranks.map(r => ({ r, s, red: s === "♥" || s === "♦" })));
+  deck.sort(() => Math.random() - 0.5);
+  table.innerHTML = "";
+  for (let c = 0; c < 7; c++) {
+    const col = document.createElement("div");
+    col.className = "sol-col";
+    for (let n = 0; n <= c; n++) {
+      const card = deck.pop();
+      const el = document.createElement("div");
+      const faceUp = n === c;
+      el.className = `sol-card ${faceUp && card.red ? "red" : ""} ${faceUp ? "" : "back"}`;
+      el.textContent = faceUp ? `${card.r}${card.s}` : "";
+      col.appendChild(el);
+    }
+    table.appendChild(col);
+  }
+  $("#solStatus").textContent = "New deal ready.";
+}
+$("#solDeal")?.addEventListener("click", dealSolitaire);
+dealSolitaire();
+
+const mine = { rows: 9, cols: 9, bombs: 10, cells: [], started: false, done: false, timer: 0, int: null };
+function resetMines(){
+  mine.cells = Array.from({ length: mine.rows * mine.cols }, (_, i) => ({ i, bomb: false, open: false, flag: false, n: 0 }));
+  mine.started = false; mine.done = false; mine.timer = 0;
+  clearInterval(mine.int); mine.int = null;
+  $("#mineTimer").textContent = "000";
+  $("#mineCount").textContent = String(mine.bombs).padStart(3, "0");
+  $("#mineReset").textContent = ":)";
+  renderMines();
+}
+function neighbors(i){
+  const r = Math.floor(i / mine.cols), c = i % mine.cols, out = [];
+  for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+    if (!dr && !dc) continue;
+    const rr = r + dr, cc = c + dc;
+    if (rr >= 0 && rr < mine.rows && cc >= 0 && cc < mine.cols) out.push(rr * mine.cols + cc);
+  }
+  return out;
+}
+function placeMines(safe){
+  const pool = mine.cells.map(c => c.i).filter(i => i !== safe);
+  pool.sort(() => Math.random() - 0.5);
+  pool.slice(0, mine.bombs).forEach(i => { mine.cells[i].bomb = true; });
+  mine.cells.forEach(c => { c.n = neighbors(c.i).filter(n => mine.cells[n].bomb).length; });
+}
+function renderMines(){
+  const grid = $("#mineGrid");
+  if (!grid) return;
+  grid.innerHTML = mine.cells.map(c => {
+    const text = c.open ? (c.bomb ? "*" : (c.n || "")) : (c.flag ? "!" : "");
+    return `<button class="mine-cell ${c.open ? "open" : ""} ${c.flag ? "flag" : ""} ${c.open && c.n ? `n${c.n}` : ""}" data-mine="${c.i}">${text}</button>`;
+  }).join("");
+}
+function openMine(i){
+  const c = mine.cells[i];
+  if (!c || c.open || c.flag || mine.done) return;
+  if (!mine.started) {
+    mine.started = true;
+    placeMines(i);
+    mine.int = setInterval(() => {
+      mine.timer = Math.min(999, mine.timer + 1);
+      $("#mineTimer").textContent = String(mine.timer).padStart(3, "0");
+    }, 1000);
+  }
+  c.open = true;
+  if (c.bomb) {
+    mine.done = true;
+    clearInterval(mine.int);
+    mine.cells.forEach(cell => { if (cell.bomb) cell.open = true; });
+    $("#mineReset").textContent = ":(";
+    renderMines();
+    return;
+  }
+  if (c.n === 0) neighbors(i).forEach(openMine);
+  const won = mine.cells.every(cell => cell.bomb || cell.open);
+  if (won) {
+    mine.done = true;
+    clearInterval(mine.int);
+    $("#mineReset").textContent = "B)";
+  }
+  renderMines();
+}
+$("#mineGrid")?.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-mine]");
+  if (btn) openMine(+btn.dataset.mine);
+});
+$("#mineGrid")?.addEventListener("contextmenu", (e) => {
+  const btn = e.target.closest("[data-mine]");
+  if (!btn || mine.done) return;
+  e.preventDefault();
+  const c = mine.cells[+btn.dataset.mine];
+  if (!c.open) c.flag = !c.flag;
+  const flags = mine.cells.filter(cell => cell.flag).length;
+  $("#mineCount").textContent = String(Math.max(0, mine.bombs - flags)).padStart(3, "0");
+  renderMines();
+});
+$("#mineReset")?.addEventListener("click", resetMines);
+resetMines();
+
+/* ---------- CATCHCASH SCREENSHOT LIGHTBOX ---------- */
+const ccLightbox = $("#ccLightbox");
+function openCcLightbox(src, caption){
+  if (!ccLightbox) return;
+  $("#ccLbImg").src = src;
+  $("#ccLbCaption").textContent = caption || "";
+  ccLightbox.classList.remove("hidden");
+}
+function closeCcLightbox(){ ccLightbox?.classList.add("hidden"); }
+$("#ccLbClose")?.addEventListener("click", closeCcLightbox);
+ccLightbox?.addEventListener("click", (e) => {
+  if (e.target === ccLightbox) closeCcLightbox();
+});
+document.addEventListener("click", (e) => {
+  const shot = e.target.closest(".cc-shot");
+  if (!shot) return;
+  e.preventDefault();
+  openCcLightbox(shot.dataset.shot, shot.dataset.caption);
+});
+
+/* APK download: if the file doesn't exist, explain politely */
+$("#ccApkBtn")?.addEventListener("click", (e) => {
+  fetch("assets/catchcash/catchcash.apk", { method: "HEAD" })
+    .then(r => {
+      if (!r.ok) throw new Error("missing");
+    })
+    .catch(() => {
+      e.preventDefault();
+      showComingSoon("CatchCash APK");
+      const note = $("#ccApkNote");
+      if (note) note.textContent = "Build pending — the APK will be available once the next release is ready.";
+    });
+});
